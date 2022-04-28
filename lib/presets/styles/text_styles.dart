@@ -49,6 +49,7 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
     height: 1.285,
     letterSpacing: 0.03,
+    color: Colors.white,
   );
 
   AppTextStyles._();

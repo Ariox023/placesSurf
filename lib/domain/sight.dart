@@ -5,6 +5,7 @@ class Sight {
   String url;
   String details;
   String type;
+  bool liked;
 
   Sight({
     required this.name,
@@ -13,5 +14,6 @@ class Sight {
     required this.url,
     required this.details,
     required this.type,
+    this.liked = false,
   });
 }

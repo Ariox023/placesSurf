@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:places/mocks.dart';
 import 'package:places/presets/colors/colors.dart';
 import 'package:places/presets/styles/text_styles.dart';
+import 'package:places/ui/screen/sight_card.dart';
 
 /// Экран 'Список интересных мест'
 class SightListScreen extends StatefulWidget {
@@ -31,6 +33,15 @@ class _SightListScreenState extends State<SightListScreen> {
         title: const _RichText(),
       ),
       resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: mocks
+              .map((e) => SightCard(
+                    cardSign: e,
+                  ))
+              .toList(),
+        ),
+      ),
     );
   }
 }
