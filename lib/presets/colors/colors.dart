@@ -8,6 +8,8 @@ class AppColors {
   static const secondary2 = Color(0xff7C7E92);
   static const inactiveBlack = Color.fromRGBO(124, 126, 146, 0.56);
   static const white = Colors.white;
+  static const blackDetails = Color.fromRGBO(59, 62, 91, 1);
+  static const greenDetails = Color.fromRGBO(76, 175, 80, 1);
 
   /// Светлый стиль
   static const whiteGreen = Color(0xff4CAF50);

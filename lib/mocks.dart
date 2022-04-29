@@ -3,7 +3,7 @@ import 'package:places/domain/sight.dart';
 final List<Sight> mocks = [
   Sight(
     name: 'Кишинёв',
-    type: 'Sity',
+    type: 'ресторан',
     details: 'Cтолица и крупнейший город Молдавии.',
     lat: 47.0264,
     lon: 28.8404,
