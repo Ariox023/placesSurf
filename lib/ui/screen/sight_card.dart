@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
+import 'package:places/presets/colors/gradients.dart';
 import 'package:places/presets/styles/text_styles.dart';
+import 'package:places/ui/wigets/containers/conainer_for_image_network.dart';
+import 'package:places/ui/wigets/containers/container_with_opacity_for_image.dart';
 
 class SightCard extends StatefulWidget {
   final Sight cardSign;
@@ -29,19 +32,22 @@ class _SightCardState extends State<SightCard> {
           children: [
             Stack(
               children: [
-                SizedBox(
-                  width: double.infinity,
+                ImageNetworkWiget(
+                  url: widget.cardSign.url[0],
                   height: 96,
-                  child: Image(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(widget.cardSign.url),
-                  ),
+                  fit: BoxFit.cover,
+                  gradient: AppGradients.whiteImageGradient,
+                ),
+                const ContainerWithOpacityForImages(
+                  height: 96,
                 ),
                 Positioned(
                   top: 16,
                   left: 16,
-                  child:
-                      Text(widget.cardSign.type, style: AppTextStyles.button),
+                  child: Text(
+                    widget.cardSign.type,
+                    style: AppTextStyles.button,
+                  ),
                 ),
                 Positioned(
                   top: 19,
@@ -78,10 +84,17 @@ class _SightCardState extends State<SightCard> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                widget.cardSign.details,
-                textAlign: TextAlign.left,
-                style: AppTextStyles.small,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width - 32,
+                ),
+                child: Text(
+                  widget.cardSign.details,
+                  // maxLines: 2,
+                  // overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  style: AppTextStyles.small,
+                ),
               ),
             ),
             const SizedBox(

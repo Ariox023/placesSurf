@@ -3,6 +3,7 @@ import 'package:places/domain/sight.dart';
 import 'package:places/presets/colors/colors.dart';
 import 'package:places/presets/strings/app_strings.dart';
 import 'package:places/presets/styles/text_styles.dart';
+import 'package:places/ui/wigets/app_bar/app_bar_sight_details.dart';
 
 class SightDetails extends StatelessWidget {
   static const routeName = '/details';
@@ -14,7 +15,7 @@ class SightDetails extends StatelessWidget {
     final card = ModalRoute.of(context)!.settings.arguments as Sight;
 
     return Scaffold(
-      appBar: _AppBar(card: card),
+      appBar: AppBarDetails(card: card),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -194,61 +195,6 @@ class SizeHeight24 extends StatelessWidget {
     return const SizedBox(
       width: double.infinity,
       height: 24,
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Sight card;
-
-  @override
-  Size get preferredSize => const Size.fromHeight(360);
-
-  const _AppBar({
-    Key? key,
-    required this.card,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      flexibleSpace: Stack(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 384,
-            child: Image(
-              fit: BoxFit.cover,
-              image: NetworkImage(card.url),
-            ),
-          ),
-          Positioned(
-            top: 36,
-            left: 16,
-            child: Container(
-              height: 32,
-              width: 32,
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios_new_outlined,
-                  size: 13,
-                  color: AppColors.blackDark,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
