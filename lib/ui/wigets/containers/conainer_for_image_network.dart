@@ -10,6 +10,7 @@ class ImageNetworkWiget extends StatelessWidget {
   final double strokeWidth;
   final BoxFit fit;
   final Gradient gradient;
+  final BlendMode colorBlendMode;
 
   const ImageNetworkWiget({
     required this.url,
@@ -18,6 +19,7 @@ class ImageNetworkWiget extends StatelessWidget {
     this.strokeWidth = 6,
     this.fit = BoxFit.fill,
     this.gradient = AppGradients.defaultGradient,
+    this.colorBlendMode = BlendMode.multiply,
     Key? key,
   }) : super(key: key);
 
@@ -31,6 +33,7 @@ class ImageNetworkWiget extends StatelessWidget {
           fit: fit,
           height: height,
           width: width,
+          colorBlendMode: colorBlendMode,
           progressIndicatorBuilder: (context, url, downloadProgress) => Center(
             child: CircularProgressIndicator(
               value: downloadProgress.progress,

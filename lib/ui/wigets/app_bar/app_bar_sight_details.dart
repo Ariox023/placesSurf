@@ -10,7 +10,7 @@ class AppBarDetails extends StatelessWidget implements PreferredSizeWidget {
   final Sight card;
 
   @override
-  Size get preferredSize => const Size.fromHeight(360);
+  Size get preferredSize => const Size.fromHeight(250);
 
   const AppBarDetails({
     Key? key,

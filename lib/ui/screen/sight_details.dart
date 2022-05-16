@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/presets/colors/colors.dart';
+import 'package:places/presets/icons/icons.dart';
 import 'package:places/presets/strings/app_strings.dart';
 import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/ui/wigets/app_bar/app_bar_sight_details.dart';
+import 'package:places/ui/wigets/bottom_navigation_bar/bottom_navigation_bar.dart';
 
 class SightDetails extends StatelessWidget {
   static const routeName = '/details';
@@ -12,7 +16,7 @@ class SightDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final card = ModalRoute.of(context)!.settings.arguments as Sight;
+    final card = ModalRoute.of(context)?.settings.arguments as Sight;
 
     return Scaffold(
       appBar: AppBarDetails(card: card),
@@ -56,30 +60,42 @@ class SightDetails extends StatelessWidget {
                 ),
               ),
               const SizeHeight24(),
-              Container(
-                height: 48,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: AppColors.greenDetails,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+              InkWell(
+                child: Container(
+                  height: 48,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: AppColors.greenDetails,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.goWhite,
+                        height: 24,
+                        width: 24,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      const Text(
+                        AppStrings.scrButtonDetailScreen,
+                        style: AppTextStyles.button,
+                      ),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Image(
-                      image: AssetImage('res/icons/GO.png'),
-                      height: 24,
-                      width: 24,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      AppStrings.scrButtonDetailScreen,
-                      style: AppTextStyles.button,
-                    ),
-                  ],
-                ),
+                onTap: () {
+                  final hiveBox = Hive.box<Sight>('box_for_Sights');
+                  final boxCard = hiveBox.get(card.name)!
+                    ..liked = false
+                    ..visited = true
+                    ..timeVisit = 'Test';
+                  hiveBox.put(card.name, boxCard);
+                  Navigator.of(context)
+                      .pushReplacementNamed('/vizited', arguments: 1);
+                },
               ),
               const SizeHeight24(),
               const Divider(
@@ -90,22 +106,27 @@ class SightDetails extends StatelessWidget {
                 height: 8,
               ),
               Row(
-                children: const [
-                  FlexsibleButtonCalendar(),
-                  FlexsibleButtonFavorited(),
+                children: [
+                  FlexsibleButtonCalendar(card: card),
+                  FlexsibleButtonFavorited(card: card),
                 ],
               ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: const BottomBar(
+        currentIndex: 1,
+      ),
     );
   }
 }
 
 class FlexsibleButtonCalendar extends StatelessWidget {
+  final Sight card;
   const FlexsibleButtonCalendar({
     Key? key,
+    required this.card,
   }) : super(key: key);
 
   @override
@@ -119,14 +140,10 @@ class FlexsibleButtonCalendar extends StatelessWidget {
               height: 40,
               color: Colors.transparent,
             ),
-            const Positioned(
-              top: 10.5,
-              left: 17,
-              child: Icon(
-                Icons.calendar_month,
-                size: 22,
-                color: AppColors.inactiveBlack,
-              ),
+            Positioned(
+              top: 8,
+              left: 16,
+              child: SvgPicture.asset(AppIcons.calendar),
             ),
             Positioned(
               top: 13,
@@ -145,29 +162,32 @@ class FlexsibleButtonCalendar extends StatelessWidget {
 }
 
 class FlexsibleButtonFavorited extends StatelessWidget {
+  final Sight card;
   const FlexsibleButtonFavorited({
     Key? key,
+    required this.card,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Flexible(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          final sightBox = Hive.box<Sight>('box_for_Sights');
+          final sightK = sightBox.get(card.name);
+          sightK!.liked = true;
+          sightBox.put(card.name, sightK);
+        },
         child: Stack(
           children: [
             Container(
               height: 40,
               color: Colors.transparent,
             ),
-            const Positioned(
-              top: 11,
-              left: 26,
-              child: Icon(
-                Icons.favorite_outline_sharp,
-                size: 22,
-                color: AppColors.blackDetails,
-              ),
+            Positioned(
+              top: 8,
+              left: 24,
+              child: SvgPicture.asset(AppIcons.heartDark),
             ),
             Positioned(
               top: 13,
