@@ -12,9 +12,9 @@ class AppIcons {
   static const list = 'res/icons/List.svg';
   static const map = 'res/icons/Map.svg';
   static const settings = 'res/icons/Settings.svg';
-
   static const listFull = 'res/icons/List_Full.svg';
   static const mapFull = 'res/icons/Map_Full.svg';
   static const settingsFull = 'res/icons/Settings_Full.svg';
+  static const search = 'res/icons/Search.svg';
   AppIcons._();
 }

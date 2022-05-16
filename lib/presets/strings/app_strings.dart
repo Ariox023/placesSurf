@@ -16,6 +16,9 @@ class AppStrings {
       'Отмечайте понравившиеся места и они появятся здесь.';
   static const String scrTabBarViewVisitedEmptyBody =
       'Завершите маршрут, чтобы место попало сюда.';
-
+  static const String scrSightListScreenEmptyBodySubtitle =
+      'Ничего не найдено.';
+  static const String scrSightListScreenEmptyBodySubtitle2 =
+      'Попробуйте изменить параметры поиска.';
   AppStrings._();
 }

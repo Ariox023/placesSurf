@@ -5,9 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/presets/colors/colors.dart';
+import 'package:places/presets/icons/icons.dart';
+import 'package:places/presets/strings/app_strings.dart';
 import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
 import 'package:places/ui/wigets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:places/ui/wigets/containers/empty_body';
 
 /// Экран 'Список интересных мест'
 class SightListScreen extends StatefulWidget {
@@ -42,13 +45,22 @@ class _SightListScreenState extends State<SightListScreen> {
       body: ValueListenableBuilder(
         valueListenable: sightBox.listenable(),
         builder: (BuildContext context, Box<Sight> box, _) {
+          final listOfWidgets = [
+            for (var item in box.values)
+              SightCard(
+                cardSign: item,
+              ),
+          ];
+          if (listOfWidgets.isEmpty) {
+            return const EmptyWidget(
+              icon: AppIcons.search,
+              subtitle: AppStrings.scrSightListScreenEmptyBodySubtitle,
+              str: AppStrings.scrSightListScreenEmptyBodySubtitle2,
+            );
+          }
+
           return ListView(
-            children: [
-              for (var item in box.values)
-                SightCard(
-                  cardSign: item,
-                ),
-            ],
+            children: listOfWidgets,
           );
         },
       ),
