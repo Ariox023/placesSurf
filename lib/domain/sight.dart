@@ -2,7 +2,7 @@ class Sight {
   String name;
   double lat;
   double lon;
-  String url;
+  List<String> url;
   String details;
   String type;
   bool liked;
