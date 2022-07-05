@@ -38,6 +38,12 @@ class AppTextStyles {
     height: 1.285,
   );
 
+  static const medium = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.285,
+  );
+
   static const superSmall = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,

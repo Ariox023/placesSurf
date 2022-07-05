@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:places/presets/colors/colors.dart';
 import 'package:places/presets/icons/icons.dart';
+import 'package:places/presets/strings/app_strings.dart';
 
 class BottomBar extends StatelessWidget {
   final int currentIndex;
@@ -9,34 +9,39 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).iconTheme.color;
+
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.list),
+          icon: SvgPicture.asset(AppIcons.list, color: color),
           activeIcon: SvgPicture.asset(
             AppIcons.listFull,
-            color: AppColors.whiteMain,
+            color: color,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.map),
+          icon: SvgPicture.asset(AppIcons.map, color: color),
           activeIcon: SvgPicture.asset(
             AppIcons.mapFull,
-            color: AppColors.whiteMain,
+            color: color,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.heartDark),
-          activeIcon: SvgPicture.asset(AppIcons.heartFull),
+          icon: SvgPicture.asset(AppIcons.heartDark, color: color),
+          activeIcon: SvgPicture.asset(
+            AppIcons.heartFull,
+            color: color,
+          ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.settings),
+          icon: SvgPicture.asset(AppIcons.settings, color: color),
           activeIcon: SvgPicture.asset(
             AppIcons.settingsFull,
-            color: AppColors.whiteMain,
+            color: color,
           ),
           label: '',
         ),
@@ -45,18 +50,17 @@ class BottomBar extends StatelessWidget {
       showUnselectedLabels: false,
       currentIndex: currentIndex,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: AppColors.white,
       landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
       onTap: (index) {
         if (index == 0) {
-          Navigator.of(context).pushReplacementNamed('/');
+          Navigator.of(context).pushNamed(AppStrings.maingsScreen);
         } else if (index == 1) {
-          Navigator.of(context).pushReplacementNamed('/vizited', arguments: 1);
+          Navigator.of(context)
+              .pushNamed(AppStrings.visitedScreen, arguments: 1);
         } else if (index == 2) {
-          Navigator.of(context).pushReplacementNamed('/vizited');
+          Navigator.of(context).pushNamed(AppStrings.visitedScreen);
         } else if (index == 3) {
-          Navigator.of(context).pushReplacementNamed('/settings');
-          // Theme.of(context).
+          Navigator.of(context).pushNamed(AppStrings.settingsScreen);
         }
       },
     );

@@ -1,7 +1,11 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, cascade_invocations
+
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:places/domain/category.dart';
 import 'package:places/domain/sight.dart';
@@ -10,6 +14,7 @@ import 'package:places/presets/colors/gradients.dart';
 import 'package:places/presets/icons/icons.dart';
 import 'package:places/presets/strings/app_strings.dart';
 import 'package:places/ui/wigets/containers/conainer_for_image_network.dart';
+// import 'package:places/ui/wigets/text_fields/my_text_field.dart';
 
 class AddSightScreen extends StatefulWidget {
   const AddSightScreen({Key? key}) : super(key: key);
@@ -25,14 +30,34 @@ class _AddSightScreenState extends State<AddSightScreen> {
   final listSights = Hive.box<Sight>(AppStrings.boxSights);
   final _serchEditionControllerCategory = TextEditingController();
   final _serchEditionControllerName = TextEditingController();
+  final _serchEditionControllerLatitude = TextEditingController();
+  final _serchEditionControllerLongitude = TextEditingController();
+  final _serchEditionControllerDescription = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   String category = '';
   String? errorTextCategory;
   String name = '';
   String? errorTextName;
+  String latitude = '';
+  String? errorTextLatitude;
+  String longitude = '';
+  String? errorTextLongitude;
+  String description = '';
+  String? errorTextDescription;
+
+  FocusNode focusNodeCategory = FocusNode();
+  FocusNode focusNodeName = FocusNode();
+  FocusNode focusNodeLat = FocusNode();
+  FocusNode focusNodeLon = FocusNode();
+  FocusNode focusNodeDescription = FocusNode();
 
   @override
   void initState() {
+    focusNodeCategory.addListener(() => setState(() {}));
+    focusNodeName.addListener(() => setState(() {}));
+    focusNodeLat.addListener(() => setState(() {}));
+    focusNodeLon.addListener(() => setState(() {}));
+    focusNodeDescription.addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -40,6 +65,14 @@ class _AddSightScreenState extends State<AddSightScreen> {
   void dispose() {
     _serchEditionControllerCategory.dispose();
     _serchEditionControllerName.dispose();
+    _serchEditionControllerLatitude.dispose();
+    _serchEditionControllerLongitude.dispose();
+    _serchEditionControllerDescription.dispose();
+    focusNodeCategory.dispose();
+    focusNodeName.dispose();
+    focusNodeLat.dispose();
+    focusNodeLon.dispose();
+    focusNodeDescription.dispose();
     super.dispose();
   }
 
@@ -76,111 +109,318 @@ class _AddSightScreenState extends State<AddSightScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 24,
-              ),
-              NotificationListener<AdressNotification>(
-                child: SizedBox(
-                  height: 72,
-                  child: Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemBuilder: (context, count) => AddImage(
-                        adress: listOfImages[count],
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    NotificationListener<AdressNotification>(
+                      child: SizedBox(
+                        height: 72,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          itemBuilder: (context, count) => Dismissible(
+                            direction: DismissDirection.up,
+                            onDismissed: (dir) {
+                              setState(() {
+                                if (count != 0) {
+                                  listOfImages.removeAt(count);
+                                }
+                              });
+                            },
+                            key: UniqueKey(),
+                            child: AddImage(
+                              adress: listOfImages[count],
+                            ),
+                          ),
+                          itemCount: listOfImages.length,
+                        ),
                       ),
-                      itemCount: listOfImages.length,
-                    ),
-                  ),
-                ),
-                onNotification: (notification) {
-                  if (notification.removeAdress.isNotEmpty) {
-                    listOfImages.removeWhere(
-                      (element) => element == notification.removeAdress,
-                    );
-                  } else {
-                    listOfImages.add(notification.adress);
-                  }
-                  setState(() {});
+                      onNotification: (notification) {
+                        if (notification.removeAdress.isNotEmpty) {
+                          listOfImages.removeWhere(
+                            (element) => element == notification.removeAdress,
+                          );
+                        } else {
+                          listOfImages.add(notification.adress);
+                        }
+                        setState(() {});
 
-                  return true;
-                },
-              ),
-              const LineSize24(),
-              Text(
-                AppStrings.scrAddSightScreenCategory.toUpperCase(),
-                style: theme.textTheme.labelSmall,
-              ),
-              TextFormField(
-                controller: _serchEditionControllerCategory,
-                decoration: InputDecoration(
-                  constraints:
-                      const BoxConstraints(maxHeight: 72, minHeight: 72),
-                  hintText: AppStrings.scrAddSightScreenEmptyCategory,
-                  hintStyle: theme.textTheme.labelMedium!
-                      .copyWith(color: AppColors.inactiveBlack),
-                  errorText: errorTextCategory,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 24,
-                      color: theme.textTheme.labelMedium?.color,
+                        return true;
+                      },
                     ),
-                    onPressed: () async {
-                      _serchEditionControllerCategory.text =
-                          await Navigator.of(context)
-                              .pushNamed(AppStrings.categoriesScreen) as String;
-                      setState(() {
-                        errorTextCategory = validatorCategory(
-                          _serchEditionControllerCategory.text,
-                        );
-                      });
-                    },
-                  ),
+                    const LineSize24(),
+                    Text(
+                      AppStrings.scrAddSightScreenCategory.toUpperCase(),
+                      style: theme.textTheme.labelSmall,
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      controller: _serchEditionControllerCategory,
+                      focusNode: focusNodeCategory,
+                      decoration: InputDecoration(
+                        constraints:
+                            const BoxConstraints(maxHeight: 72, minHeight: 72),
+                        hintText: AppStrings.scrAddSightScreenEmptyCategory,
+                        contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        hintStyle: theme.textTheme.labelMedium!
+                            .copyWith(color: AppColors.inactiveBlack),
+                        errorText: errorTextCategory,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 24,
+                            color: theme.textTheme.labelMedium?.color,
+                          ),
+                          onPressed: () async {
+                            _serchEditionControllerCategory.text =
+                                await Navigator.of(context)
+                                        .pushNamed(AppStrings.categoriesScreen)
+                                    as String;
+                            setState(() {
+                              errorTextCategory = validatorCategory(
+                                _serchEditionControllerCategory.text,
+                              );
+                            });
+                          },
+                        ),
+                      ),
+                      style: theme.textTheme.labelMedium,
+                      onFieldSubmitted: (value) {
+                        category = value;
+                        setState(() {
+                          errorTextCategory = validatorCategory(value);
+                          if (errorTextCategory == null) {
+                            FocusScope.of(context).requestFocus(focusNodeName);
+                          }
+                        });
+                      },
+                      validator: validatorCategory,
+                    ),
+                    Text(
+                      AppStrings.scrAddSightScreenName,
+                      style: theme.textTheme.labelSmall,
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      controller: _serchEditionControllerName,
+                      decoration: myTextDecoration(
+                        theme,
+                        errorTextName,
+                        _serchEditionControllerName,
+                      ),
+                      style: theme.textTheme.labelMedium,
+                      onFieldSubmitted: (value) {
+                        name = value;
+                        setState(() {
+                          errorTextName = validatorName(value);
+                        });
+                      },
+                      validator: validatorName,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            AppStrings.scrAddSightScreenMapLat,
+                            style: theme.textTheme.labelSmall,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 24,
+                        ),
+                        Expanded(
+                          child: Text(
+                            AppStrings.scrAddSightScreenMapLong,
+                            style: theme.textTheme.labelSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            textInputAction: TextInputAction.next,
+                            controller: _serchEditionControllerLatitude,
+                            decoration: myTextDecoration(
+                              theme,
+                              errorTextLatitude,
+                              _serchEditionControllerLatitude,
+                            ),
+                            keyboardType: TextInputType.number,
+                            style: theme.textTheme.labelMedium,
+                            onFieldSubmitted: (value) {
+                              name = value;
+                              setState(() {
+                                errorTextLatitude = validatorLatitude(value);
+                              });
+                            },
+                            maxLength: 10,
+                            validator: validatorLatitude,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[\d\.\-]'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 24,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            textInputAction: TextInputAction.next,
+                            controller: _serchEditionControllerLongitude,
+                            decoration: myTextDecoration(
+                              theme,
+                              errorTextLongitude,
+                              _serchEditionControllerLongitude,
+                            ),
+                            keyboardType: TextInputType.number,
+                            style: theme.textTheme.labelMedium,
+                            onFieldSubmitted: (value) {
+                              name = value;
+                              setState(() {
+                                errorTextLongitude = validatorLongitude(value);
+                              });
+                            },
+                            validator: validatorLongitude,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[\d\.\-]'),
+                              ),
+                            ],
+                            onEditingComplete: () => log('onEditingComplete'),
+                            onChanged: (_) => log('onChanged'),
+                            onSaved: (_) => log('onSaved'),
+                            onTap: () => log('onTap'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    InkWell(
+                      radius: 24,
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        final pos = await Navigator.of(context)
+                            .pushNamed(AppStrings.mapScreen);
+                        if (pos != null) {
+                          setState(() {
+                            pos as LatLng;
+                            _serchEditionControllerLatitude.text =
+                                pos.latitude.toStringAsFixed(6);
+                            _serchEditionControllerLongitude.text =
+                                pos.longitude.toStringAsFixed(6);
+                          });
+                        }
+                      },
+                      child: Text(
+                        AppStrings.scrAddSightScreenGoToMap,
+                        textAlign: TextAlign.start,
+                        style: theme.textTheme.labelMedium
+                            ?.copyWith(color: Colors.green),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SizedBox(
+                      height: 32,
+                      child: Text(
+                        AppStrings.scrAddSightScreenDescription,
+                        style: theme.textTheme.labelSmall,
+                      ),
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      controller: _serchEditionControllerDescription,
+                      focusNode: focusNodeDescription,
+                      decoration: myTextDecoration(
+                        theme,
+                        errorTextDescription,
+                        _serchEditionControllerDescription,
+                        hint: AppStrings.scrAddSightScreenDescriptionHint,
+                      ),
+                      style: theme.textTheme.labelMedium,
+                      minLines: 4,
+                      maxLines: 12,
+                      onFieldSubmitted: (value) {
+                        description = value;
+                        setState(() {
+                          errorTextDescription = validatorDescription(value);
+                        });
+                      },
+                      validator: validatorDescription,
+                    ),
+                  ],
                 ),
-                style: theme.textTheme.labelMedium,
-                onFieldSubmitted: (value) {
-                  category = value;
-                  setState(() {
-                    errorTextCategory = validatorCategory(value);
-                  });
-                },
-                validator: validatorCategory,
-              ),
-              Text(
-                AppStrings.scrAddSightScreenName,
-                style: theme.textTheme.labelSmall,
-              ),
-              const SizedBox(
-                height: 14,
-              ),
-              TextFormField(
-                controller: _serchEditionControllerName,
-                decoration: InputDecoration(
-                  constraints:
-                      const BoxConstraints(maxHeight: 64, minHeight: 64),
-                  errorText: errorTextName,
-                  errorMaxLines: 2,
-                  border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: theme.buttonColor.withOpacity(0.4)),
-                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                  ),
-                  contentPadding: const EdgeInsets.fromLTRB(16, 10, 0, 10),
-                ),
-                style: theme.textTheme.labelMedium,
-                onFieldSubmitted: (value) {
-                  name = value;
-                  setState(() {
-                    errorTextName = validatorName(value);
-                  });
-                },
-                validator: validatorName,
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  InputDecoration myTextDecoration(
+    ThemeData theme,
+    String? errorText,
+    TextEditingController controller, {
+    String? hint = '',
+  }) {
+    return InputDecoration(
+      isDense: true,
+      constraints: const BoxConstraints(maxHeight: 84, minHeight: 84),
+      errorText: errorText,
+      hintText: hint,
+      errorStyle: theme.textTheme.labelSmall?.copyWith(
+        color: theme.errorColor,
+        fontSize: 12,
+      ),
+      border: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(16, 10, 0, 10),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+        borderSide: BorderSide(
+          color: theme.buttonColor.withOpacity(0.4),
+        ),
+      ),
+      errorMaxLines: 2,
+      counterText: '',
+      suffixIcon: IconButton(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        constraints: const BoxConstraints(),
+        icon: Icon(
+          Icons.clear_rounded,
+          size: 24,
+          color: controller.text.isEmpty
+              ? Colors.transparent
+              : theme.textTheme.labelMedium?.color,
+        ),
+        onPressed: () {
+          setState(() {
+            controller.text = '';
+          });
+        },
+      ),
+      suffixIconConstraints: BoxConstraints.tight(
+        const Size.square(40),
       ),
     );
   }
@@ -213,6 +453,39 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
     return null;
   }
+
+  String? validatorDescription(String? val) {
+    if (val!.isEmpty) {
+      return AppStrings.scrAddSightScreenDescriptionError;
+    }
+
+    return null;
+  }
+
+  String? validatorLatitude(String? val) {
+    final latitudeNum = double.tryParse(val!);
+    if (latitudeNum == null) {
+      return AppStrings.scrAddSightScreenMapEmptyLat;
+    }
+    if (latitudeNum < -90 || latitudeNum > 90) {
+      return AppStrings.scrAddSightScreenMapErrorLat;
+    }
+
+    return null;
+  }
+
+  String? validatorLongitude(String? val) {
+    final longitudeNum = double.tryParse(val!);
+    if (longitudeNum == null) {
+      return AppStrings.scrAddSightScreenMapEmptyLong;
+    }
+    if (longitudeNum < -180 || longitudeNum > 180) {
+      return AppStrings.scrAddSightScreenMapErrorLong;
+    }
+
+    return null;
+  }
+
   //   final state = _formKey.currentState;
   // if (state!.validate()) {
   //   state.save();

@@ -1,9 +1,10 @@
 import 'package:places/domain/sight.dart';
+import 'package:places/presets/strings/app_strings.dart';
 
 final List<Sight> mocks = [
   Sight(
     name: 'Кишинёв',
-    type: 'ресторан',
+    type: AppStrings.caregoriesRestourant,
     details: 'Cтолица и крупнейший город Молдавии.',
     lat: 47.0264,
     lon: 28.8404,
@@ -17,7 +18,7 @@ final List<Sight> mocks = [
   ),
   Sight(
     name: 'Бельцы',
-    type: 'Sity',
+    type: AppStrings.caregoriesCity,
     details:
         'Важнейший транспортный узел севера Молдавии, в состав которого входят две железнодорожные станции.',
     lat: 47.4542,
@@ -26,15 +27,15 @@ final List<Sight> mocks = [
   ),
   Sight(
     name: 'Орхей',
-    type: 'Sity',
+    type: AppStrings.caregoriesCity,
     details: 'Город и муниципий в Молдавии, центр Оргеевского района.',
-    lat: 47.2402,
-    lon: 28.4828,
+    lat: 47.2305,
+    lon: 28.4928,
     url: ['https://newsmaker.md/wp-content/uploads/2020/01/3-6-1024x681.jpg'],
   ),
   Sight(
     name: 'Старый Орхей',
-    type: 'Museum',
+    type: AppStrings.caregoriesMuseum,
     details:
         'Историко-археологический комплекс, расположенный в 60 км к северо-востоку от Кишинёва, на реке Реут.',
     lat: 47.3605,
@@ -43,7 +44,7 @@ final List<Sight> mocks = [
   ),
   Sight(
     name: 'Единцы',
-    type: 'Sity',
+    type: AppStrings.caregoriesCity,
     details: 'Город и муниципий в Молдавии, центр Единéцкого района.',
     lat: 48.16806,
     lon: 27.1818,
@@ -51,7 +52,7 @@ final List<Sight> mocks = [
   ),
   Sight(
     name: 'Рези́на',
-    type: 'Sity',
+    type: AppStrings.caregoriesCity,
     details: 'Город в Молдавии, центр Резинского района.',
     lat: 47.66667,
     lon: 28.605,
@@ -61,18 +62,18 @@ final List<Sight> mocks = [
   ),
   Sight(
     name: 'Замок “Mimi”',
-    type: 'winery',
+    type: AppStrings.caregoriesVinery,
     details:
         'Замок Мими в настоящее время входит в число самых красивых архитектурных шедевров в мире вина.',
-    lat: 0.001,
-    lon: 0.001,
+    lat: 47.235,
+    lon: 28.235,
     url: [
       'https://www.deltalight.com/frontend/files/projects/images/source/003002_REA01.jpg',
     ],
   ),
   Sight(
     name: 'Монастырь Кэприяна',
-    type: 'Monastery',
+    type: AppStrings.caregoriesMonastery,
     details:
         'В живописных Кодрах, в 40 км к северо-западу от Кишинева, расположен один из самых старинных монастырей Молдовы Каприяна. Дата основания монастыря 1429 год.',
     lat: 47.116018,

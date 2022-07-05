@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:places/presets/colors/colors.dart';
-import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/presets/strings/app_strings.dart';
+import 'package:places/presets/styles/text_styles.dart';
 
 class EmptyWidget extends StatelessWidget {
   final String icon;
@@ -11,7 +11,7 @@ class EmptyWidget extends StatelessWidget {
   const EmptyWidget({
     Key? key,
     required this.icon,
-    this.subtitle = '',
+    this.subtitle = AppStrings.scrTabBarViewEmptyBody,
     required this.str,
   }) : super(key: key);
 
@@ -26,19 +26,10 @@ class EmptyWidget extends StatelessWidget {
             height: 24,
           ),
           Text(
-            AppStrings.scrTabBarViewEmptyBody,
+            subtitle,
             style:
                 AppTextStyles.subtitle.copyWith(color: AppColors.inactiveBlack),
           ),
-          if(subtitle !='')
-                    Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 53),
-            child: Text(
-              subtitle,
-              style:
-                  AppTextStyles.subtitle.copyWith(color: AppColors.inactiveBlack),
-              textAlign: TextAlign.center,
-            ),),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 53),
             child: Text(

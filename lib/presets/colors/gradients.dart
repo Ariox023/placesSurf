@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places/presets/colors/colors.dart';
 
 /// Градиенты приложения
 class AppGradients {
@@ -12,6 +13,16 @@ class AppGradients {
   );
 
   static const Gradient defaultGradient = LinearGradient(colors: []);
+
+  static Gradient addSightGradient = const LinearGradient(
+    transform: GradientRotation(272.5 - 90),
+    begin: Alignment(-1.25, 0),
+    end: Alignment(1.33, 0),
+    colors: [
+      Color.fromRGBO(255, 231, 105, 1),
+      AppColors.blackGreen,
+    ],
+  );
 
   AppGradients._();
 }
