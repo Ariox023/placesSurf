@@ -71,14 +71,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
               AppStrings.buttonClear,
               style: theme.textTheme.bodySmall,
             ),
-            // style: ButtonStyle(
-            //   shadowColor: MaterialStateColor.resolveWith(
-            //     (states) => Colors.transparent,
-            //   ),
-            //   overlayColor: MaterialStateColor.resolveWith(
-            //     (states) => Colors.transparent,
-            //   ),
-            // ),
           ),
           TextButton(
             onPressed: () {

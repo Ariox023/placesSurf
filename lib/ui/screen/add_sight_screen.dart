@@ -1,7 +1,5 @@
 // ignore_for_file: deprecated_member_use, cascade_invocations
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +11,7 @@ import 'package:places/presets/colors/colors.dart';
 import 'package:places/presets/colors/gradients.dart';
 import 'package:places/presets/icons/icons.dart';
 import 'package:places/presets/strings/app_strings.dart';
+import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/ui/wigets/containers/conainer_for_image_network.dart';
 // import 'package:places/ui/wigets/text_fields/my_text_field.dart';
 
@@ -34,15 +33,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
   final _serchEditionControllerLongitude = TextEditingController();
   final _serchEditionControllerDescription = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String category = '';
   String? errorTextCategory;
-  String name = '';
   String? errorTextName;
-  String latitude = '';
   String? errorTextLatitude;
-  String longitude = '';
   String? errorTextLongitude;
-  String description = '';
   String? errorTextDescription;
 
   FocusNode focusNodeCategory = FocusNode();
@@ -79,6 +73,16 @@ class _AddSightScreenState extends State<AddSightScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final canTap = _serchEditionControllerCategory.text.isNotEmpty &&
+        _serchEditionControllerName.text.isNotEmpty &&
+        _serchEditionControllerLatitude.text.isNotEmpty &&
+        _serchEditionControllerLongitude.text.isNotEmpty &&
+        _serchEditionControllerDescription.text.isNotEmpty &&
+        errorTextCategory == null &&
+        errorTextName == null &&
+        errorTextLatitude == null &&
+        errorTextLongitude == null &&
+        errorTextDescription == null;
 
     return Scaffold(
       appBar: AppBar(
@@ -120,9 +124,10 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       child: SizedBox(
                         height: 72,
                         child: ListView.builder(
-                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics(),
+                          ),
                           scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           itemBuilder: (context, count) => Dismissible(
                             direction: DismissDirection.up,
                             onDismissed: (dir) {
@@ -162,6 +167,7 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       textInputAction: TextInputAction.next,
                       controller: _serchEditionControllerCategory,
                       focusNode: focusNodeCategory,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
                         constraints:
                             const BoxConstraints(maxHeight: 72, minHeight: 72),
@@ -170,7 +176,11 @@ class _AddSightScreenState extends State<AddSightScreen> {
                         hintStyle: theme.textTheme.labelMedium!
                             .copyWith(color: AppColors.inactiveBlack),
                         errorText: errorTextCategory,
+                        errorStyle: theme.textTheme.labelMedium!
+                            .copyWith(fontSize: 12, color: Colors.red),
                         suffixIcon: IconButton(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
                           icon: Icon(
                             Icons.arrow_forward_ios_rounded,
                             size: 24,
@@ -191,7 +201,6 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       ),
                       style: theme.textTheme.labelMedium,
                       onFieldSubmitted: (value) {
-                        category = value;
                         setState(() {
                           errorTextCategory = validatorCategory(value);
                           if (errorTextCategory == null) {
@@ -209,18 +218,23 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       height: 14,
                     ),
                     TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.next,
                       controller: _serchEditionControllerName,
+                      focusNode: focusNodeName,
                       decoration: myTextDecoration(
                         theme,
                         errorTextName,
                         _serchEditionControllerName,
+                        isActivated: focusNodeName.hasFocus,
                       ),
                       style: theme.textTheme.labelMedium,
                       onFieldSubmitted: (value) {
-                        name = value;
                         setState(() {
                           errorTextName = validatorName(value);
+                          if (errorTextName == null) {
+                            FocusScope.of(context).requestFocus(focusNodeLat);
+                          }
                         });
                       },
                       validator: validatorName,
@@ -253,17 +267,22 @@ class _AddSightScreenState extends State<AddSightScreen> {
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
                             controller: _serchEditionControllerLatitude,
+                            focusNode: focusNodeLat,
                             decoration: myTextDecoration(
                               theme,
                               errorTextLatitude,
                               _serchEditionControllerLatitude,
+                              isActivated: focusNodeLat.hasFocus,
                             ),
                             keyboardType: TextInputType.number,
                             style: theme.textTheme.labelMedium,
                             onFieldSubmitted: (value) {
-                              name = value;
                               setState(() {
                                 errorTextLatitude = validatorLatitude(value);
+                                if (errorTextLatitude == null) {
+                                  FocusScope.of(context)
+                                      .requestFocus(focusNodeLon);
+                                }
                               });
                             },
                             maxLength: 10,
@@ -282,17 +301,22 @@ class _AddSightScreenState extends State<AddSightScreen> {
                           child: TextFormField(
                             textInputAction: TextInputAction.next,
                             controller: _serchEditionControllerLongitude,
+                            focusNode: focusNodeLon,
                             decoration: myTextDecoration(
                               theme,
                               errorTextLongitude,
                               _serchEditionControllerLongitude,
+                              isActivated: focusNodeLon.hasFocus,
                             ),
                             keyboardType: TextInputType.number,
                             style: theme.textTheme.labelMedium,
                             onFieldSubmitted: (value) {
-                              name = value;
                               setState(() {
                                 errorTextLongitude = validatorLongitude(value);
+                                if (errorTextLongitude == null) {
+                                  FocusScope.of(context)
+                                      .requestFocus(focusNodeDescription);
+                                }
                               });
                             },
                             validator: validatorLongitude,
@@ -301,36 +325,34 @@ class _AddSightScreenState extends State<AddSightScreen> {
                                 RegExp(r'[\d\.\-]'),
                               ),
                             ],
-                            onEditingComplete: () => log('onEditingComplete'),
-                            onChanged: (_) => log('onChanged'),
-                            onSaved: (_) => log('onSaved'),
-                            onTap: () => log('onTap'),
                           ),
                         ),
                       ],
                     ),
-                    InkWell(
-                      radius: 24,
-                      highlightColor: Colors.transparent,
-                      splashColor: Colors.transparent,
-                      onTap: () async {
-                        final pos = await Navigator.of(context)
-                            .pushNamed(AppStrings.mapScreen);
-                        if (pos != null) {
-                          setState(() {
-                            pos as LatLng;
-                            _serchEditionControllerLatitude.text =
-                                pos.latitude.toStringAsFixed(6);
-                            _serchEditionControllerLongitude.text =
-                                pos.longitude.toStringAsFixed(6);
-                          });
-                        }
-                      },
-                      child: Text(
-                        AppStrings.scrAddSightScreenGoToMap,
-                        textAlign: TextAlign.start,
-                        style: theme.textTheme.labelMedium
-                            ?.copyWith(color: Colors.green),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                        onTap: () async {
+                          final pos = await Navigator.of(context)
+                              .pushNamed(AppStrings.mapScreen);
+                          if (pos != null) {
+                            setState(() {
+                              pos as LatLng;
+                              _serchEditionControllerLatitude.text =
+                                  pos.latitude.toStringAsFixed(6);
+                              _serchEditionControllerLongitude.text =
+                                  pos.longitude.toStringAsFixed(6);
+                            });
+                          }
+                        },
+                        child: Text(
+                          AppStrings.scrAddSightScreenGoToMap,
+                          textAlign: TextAlign.start,
+                          style: theme.textTheme.labelMedium
+                              ?.copyWith(color: Colors.green),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -344,22 +366,27 @@ class _AddSightScreenState extends State<AddSightScreen> {
                       ),
                     ),
                     TextFormField(
-                      textInputAction: TextInputAction.next,
+                      textInputAction: TextInputAction.done,
+                      textCapitalization: TextCapitalization.sentences,
                       controller: _serchEditionControllerDescription,
                       focusNode: focusNodeDescription,
                       decoration: myTextDecoration(
                         theme,
                         errorTextDescription,
                         _serchEditionControllerDescription,
+                        isActivated: focusNodeDescription.hasFocus,
                         hint: AppStrings.scrAddSightScreenDescriptionHint,
                       ),
                       style: theme.textTheme.labelMedium,
                       minLines: 4,
                       maxLines: 12,
                       onFieldSubmitted: (value) {
-                        description = value;
                         setState(() {
-                          errorTextDescription = validatorDescription(value);
+                          final state = _formKey.currentState;
+                          if (state!.validate()) {
+                            state.save();
+                            focusNodeDescription.unfocus();
+                          }
                         });
                       },
                       validator: validatorDescription,
@@ -371,14 +398,59 @@ class _AddSightScreenState extends State<AddSightScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: Container(
+        height: 48,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: Colors.transparent,
+        child: InkWell(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          onTap: () {
+            final state = _formKey.currentState;
+            if (state!.validate()) {
+              state.save();
+              listOfImages.removeAt(0);
+              final newSight = Sight(
+                name: _serchEditionControllerName.text,
+                lat: double.parse(_serchEditionControllerLatitude.text),
+                lon: double.parse(_serchEditionControllerLongitude.text),
+                url: listOfImages,
+                details: _serchEditionControllerDescription.text,
+                type: _serchEditionControllerCategory.text,
+              );
+              final listSights = Hive.box<Sight>(AppStrings.boxSights);
+              listSights.put(newSight.name, newSight);
+              Navigator.of(context).pop();
+            }
+          },
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              color: canTap ? theme.buttonColor : theme.cardColor,
+            ),
+            child: Center(
+              child: Text(
+                AppStrings.buttonSave.toUpperCase(),
+                style: canTap
+                    ? AppTextStyles.button
+                    : AppTextStyles.button.copyWith(
+                        color: AppColors.inactiveBlack.withOpacity(0.56),
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
+  // ignore: long-parameter-list
   InputDecoration myTextDecoration(
     ThemeData theme,
     String? errorText,
     TextEditingController controller, {
     String? hint = '',
+    bool isActivated = false,
   }) {
     return InputDecoration(
       isDense: true,
@@ -401,24 +473,24 @@ class _AddSightScreenState extends State<AddSightScreen> {
       ),
       errorMaxLines: 2,
       counterText: '',
-      suffixIcon: IconButton(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        constraints: const BoxConstraints(),
-        icon: Icon(
-          Icons.clear_rounded,
-          size: 24,
-          color: controller.text.isEmpty
-              ? Colors.transparent
-              : theme.textTheme.labelMedium?.color,
-        ),
-        onPressed: () {
-          setState(() {
-            controller.text = '';
-          });
-        },
-      ),
+      suffixIcon: isActivated
+          ? IconButton(
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              constraints: const BoxConstraints(),
+              icon: Icon(
+                Icons.clear_rounded,
+                size: 24,
+                color: theme.textTheme.labelMedium?.color,
+              ),
+              onPressed: () {
+                setState(() {
+                  controller.text = '';
+                });
+              },
+            )
+          : null,
       suffixIconConstraints: BoxConstraints.tight(
         const Size.square(40),
       ),
@@ -485,11 +557,6 @@ class _AddSightScreenState extends State<AddSightScreen> {
 
     return null;
   }
-
-  //   final state = _formKey.currentState;
-  // if (state!.validate()) {
-  //   state.save();
-  // }
 }
 
 class LineSize24 extends StatelessWidget {
@@ -519,66 +586,91 @@ class AddImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // ignore: prefer-conditional-expressions
-    if (adress.isNotEmpty) {
-      return Container(
-        height: 72,
-        width: 72,
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-        // padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            ImageNetworkWiget(
-              url: adress,
+    return adress.isNotEmpty
+        ? Container(
+            height: 72,
+            width: 72,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+            clipBehavior: Clip.hardEdge,
+            child: Stack(children: [
+              ImageNetworkWiget(
+                url: adress,
+                height: 72,
+                width: 72,
+                gradient: AppGradients.whiteImageGradient,
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: InkWell(
+                  onTap: () =>
+                      AdressNotification(removeAdress: adress, adress: '')
+                        ..dispatch(context),
+                  child: SvgPicture.asset(AppIcons.iconRemove),
+                ),
+              ),
+            ]),
+          )
+        : InkWell(
+            borderRadius: BorderRadius.circular(12),
+            highlightColor: Colors.transparent,
+            onTap: () async {
+              await inputDialog(context).then((value) {
+                if (value != null && value.isNotEmpty) {
+                  AdressNotification(adress: value).dispatch(context);
+                }
+              });
+            },
+            child: Container(
               height: 72,
               width: 72,
-              gradient: AppGradients.whiteImageGradient,
-            ),
-            Positioned(
-              top: 4,
-              right: 4,
-              child: InkWell(
-                onTap: () => AdressNotification(
-                  removeAdress: adress,
-                  adress: '',
-                )..dispatch(context),
-                child: SvgPicture.asset(AppIcons.iconRemove),
+              constraints: const BoxConstraints(maxHeight: 72, maxWidth: 72),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.buttonColor, width: 2),
               ),
+              child: Icon(Icons.add, size: 40, color: theme.buttonColor),
+            ),
+          );
+  }
+
+  Future<String?> inputDialog(BuildContext context) async {
+    var adress = '';
+
+    return showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(AppStrings.scrMapNewSightAddImageTitle),
+          content: Row(
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    labelText: AppStrings.scrMapNewSightAddImageTitle,
+                  ),
+                  onChanged: (value) {
+                    adress = value;
+                  },
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop(adress);
+              },
             ),
           ],
-        ),
-      );
-    } else {
-      return InkWell(
-        borderRadius: BorderRadius.circular(12),
-        highlightColor: Colors.transparent,
-        onTap: () => const AdressNotification(
-          adress:
-              'https://st.depositphotos.com/1000122/2033/i/600/depositphotos_20337813-stock-photo-portrait-of-young-cats-group.jpg',
-        )..dispatch(context),
-        child: Container(
-          height: 72,
-          width: 72,
-          constraints: const BoxConstraints(maxHeight: 72, maxWidth: 72),
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: theme.buttonColor,
-              width: 2,
-            ),
-          ),
-          child: Icon(
-            Icons.add,
-            size: 40,
-            color: theme.buttonColor,
-          ),
-        ),
-      );
-    }
+        );
+      },
+    );
   }
 }

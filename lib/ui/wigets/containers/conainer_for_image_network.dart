@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_annotating_with_dynamic
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:places/presets/colors/colors.dart';
@@ -41,6 +43,8 @@ class ImageNetworkWiget extends StatelessWidget {
               strokeWidth: strokeWidth,
             ),
           ),
+          errorWidget: (context, url, dynamic error) =>
+              const Icon(Icons.error_outlined),
         ),
       ),
     );

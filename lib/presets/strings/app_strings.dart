@@ -23,8 +23,9 @@ class AppStrings {
   static const String addSightScreen = '/add_sight_screen';
   static const String categoriesScreen = '/categories';
   static const String mapScreen = '/map';
+  static const String onboardingScreen = '/initial';
 
-  // Настройки для отбора мест сохраненные в Hive
+  // Настройки для отбора мест сохраненные в Hivev
   static const String boxFilters = 'Filters';
   static const String boxFiltersCategories = 'Categories';
   static const String boxFiltersRangeMin = 'RangeMin';
@@ -74,11 +75,13 @@ class AppStrings {
   static const String scrFirstSettingsScreenThema = 'Темная тема';
   static const String scrFirstSettingsScreenInfo = 'Смотреть туториал';
 
+  static const String scrOnboardingScreenState = 'Смотреть туториал';
   // Кнопки
   static const String buttonClear = 'Очистить';
   static const String buttonFill = 'Заполнить';
   static const String buttonCancellation = 'Отмена';
   static const String buttonSave = 'Сохранить';
+  static const String buttonSkip = 'Пропустить';
 
   // Строки Экрана добавления нового места.
   static const String scrAddSightScreenCategory = 'Категория';
@@ -106,5 +109,22 @@ class AppStrings {
   static const String scrAddSightScreenDescriptionError =
       'Описание должно быть заполнено.';
   static const String scrAddSightScreenDescriptionHint = 'Введите текст';
+  static const String scrMapNewSight = 'Новое интересное место.';
+  static const String scrMapNewSightAddImageTitle = 'Введите адрес изображения';
+
+  // Строки Начального экрана.
+  static const String scrOnboardingScreenFirstPage1 =
+      'Добро пожаловать в Путеводитель';
+  static const String scrOnboardingScreenFirstPage2 =
+      'Ищи новые локации и сохраняй самые любимые.';
+  static const String scrOnboardingScreenSecondPage1 =
+      'Построй маршрут и отправляйся в путь';
+  static const String scrOnboardingScreenSecondPage2 =
+      'Достигай цели максимально быстро и комфортно.';
+  static const String scrOnboardingScreenThirdPage1 =
+      'Добавляй места, которые нашёл сам';
+  static const String scrOnboardingScreenThirdPage2 =
+      'Делись самыми интересными и помоги нам стать лучше!';
+  static const String scrOnboardingScreenThirdPageButton = 'На старт';
   AppStrings._();
 }

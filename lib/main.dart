@@ -18,7 +18,6 @@ import 'package:places/ui/screen/res/themes.dart';
 import 'package:places/ui/screen/settings.dart';
 import 'package:places/ui/screen/sight_details.dart';
 import 'package:places/ui/screen/sight_list_screen.dart';
-// import 'package:places/ui/screen/test.dart';
 import 'package:places/ui/screen/tutorial_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 

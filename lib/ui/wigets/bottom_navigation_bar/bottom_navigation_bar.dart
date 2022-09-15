@@ -55,8 +55,7 @@ class BottomBar extends StatelessWidget {
         if (index == 0) {
           Navigator.of(context).pushNamed(AppStrings.maingsScreen);
         } else if (index == 1) {
-          Navigator.of(context)
-              .pushNamed(AppStrings.visitedScreen, arguments: 1);
+          Navigator.of(context).pushNamed(AppStrings.mapScreen);
         } else if (index == 2) {
           Navigator.of(context).pushNamed(AppStrings.visitedScreen);
         } else if (index == 3) {

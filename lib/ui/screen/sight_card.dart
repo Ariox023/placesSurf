@@ -28,124 +28,124 @@ class SightCard extends StatelessWidget {
           color: theme.cardColor,
           borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
-        margin: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: model == 1 ? 5 : 16,
-        ),
+        margin: EdgeInsets.all(model == 1 ? 16 : 0),
+        alignment: Alignment.center,
         clipBehavior: Clip.antiAlias,
-        child: Stack(
-          clipBehavior: Clip.none,
-          fit: StackFit.passthrough,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ImageCardWiget(cardSign: cardSign, model: model),
-                const SizedBox(
-                  height: 16,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    cardSign.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: AppTextStyles.text,
+        child: Center(
+          child: Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.passthrough,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ImageCardWiget(cardSign: cardSign, model: model),
+                  const SizedBox(
+                    height: 16,
                   ),
-                ),
-                if (model == 1)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      cardSign.details,
-                      textAlign: TextAlign.left,
-                      maxLines: 3,
+                      cardSign.name,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.small,
+                      textAlign: TextAlign.left,
+                      style: AppTextStyles.text,
                     ),
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: SizedBox(
-                      height: 28,
+                  ),
+                  if (model == 1)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        cardSign.timeVisit.isEmpty ? '' : cardSign.timeVisit,
-                        style: AppTextStyles.small.copyWith(
-                          color: model == 2
-                              ? AppColors.whiteGreen
-                              : AppColors.inactiveBlack,
+                        cardSign.details,
+                        textAlign: TextAlign.left,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.small,
+                      ),
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: SizedBox(
+                        height: 28,
+                        child: Text(
+                          cardSign.timeVisit.isEmpty ? '' : cardSign.timeVisit,
+                          style: AppTextStyles.small.copyWith(
+                            color: model == 2
+                                ? AppColors.whiteGreen
+                                : AppColors.inactiveBlack,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                if (model != 1)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      cardSign.workingHours,
-                      style: theme.textTheme.labelSmall,
+                  if (model != 1)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        cardSign.workingHours,
+                        style: theme.textTheme.labelSmall,
+                      ),
                     ),
+                  const SizedBox(
+                    height: 16,
                   ),
-                const SizedBox(
-                  height: 16,
-                ),
-              ],
-            ),
-            Positioned.fill(
-              child: Material(
-                type: MaterialType.transparency,
-                child: InkWell(
-                  splashColor: theme.splashColor,
-                  highlightColor: Colors.transparent,
-                  radius: 100,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                      AppStrings.detailsScreen,
-                      arguments: cardSign,
-                    );
-                  },
+                ],
+              ),
+              Positioned.fill(
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: InkWell(
+                    splashColor: theme.splashColor,
+                    highlightColor: Colors.transparent,
+                    radius: 100,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        AppStrings.detailsScreen,
+                        arguments: cardSign,
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            if (model == 1)
-              Positioned(
-                top: 4,
-                right: 4,
-                child: SecondIconButtonWigetLike(
-                  cardSign: cardSign,
-                ),
-              )
-            else
-              Positioned(
-                top: 4,
-                right: 4,
-                child: SecondIconButtonWigetRemove(
-                  cardSign: cardSign,
-                  model: model,
-                ),
-              ),
-            if (model != 1)
-              if (model == 2)
+              if (model == 1)
                 Positioned(
                   top: 4,
-                  right: 50,
-                  child: FirstIconButtonWigetCalendar(
+                  right: 4,
+                  child: SecondIconButtonWigetLike(
                     cardSign: cardSign,
-                    model: model,
                   ),
                 )
               else
                 Positioned(
                   top: 4,
-                  right: 50,
-                  child: FirstIconButtonWigetShare(
+                  right: 4,
+                  child: SecondIconButtonWigetRemove(
                     cardSign: cardSign,
                     model: model,
                   ),
                 ),
-          ],
+              if (model != 1)
+                if (model == 2)
+                  Positioned(
+                    top: 4,
+                    right: 50,
+                    child: FirstIconButtonWigetCalendar(
+                      cardSign: cardSign,
+                      model: model,
+                    ),
+                  )
+                else
+                  Positioned(
+                    top: 4,
+                    right: 50,
+                    child: FirstIconButtonWigetShare(
+                      cardSign: cardSign,
+                      model: model,
+                    ),
+                  ),
+            ],
+          ),
         ),
       ),
     );

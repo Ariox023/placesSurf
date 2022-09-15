@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_types_on_closure_parameters, cascade_invocations
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -39,6 +40,7 @@ class _VisitingScreenState extends State<VisitingScreen> {
               sightBox: sightBox,
             ),
           ],
+          viewportFraction: 0.8,
         ),
         bottomNavigationBar: BottomBar(
           currentIndex: indexInt == 0 ? 2 : 1,
@@ -59,7 +61,7 @@ class FirstTabBarViewWiget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: sightBox.listenable(),
-      builder: (BuildContext context, Box<Sight> box, _) {
+      builder: (context, Box<Sight> box, _) {
         final listOfWidgets = [
           for (var item in box.values)
             if (item.liked)
@@ -71,8 +73,11 @@ class FirstTabBarViewWiget extends StatelessWidget {
                 dragStartBehavior: DragStartBehavior.down,
                 key: Key(item.name),
                 background: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  color: Colors.red,
+                  margin: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    color: Colors.red,
+                  ),
                   alignment: Alignment.centerRight,
                   child: const Icon(
                     Icons.delete_forever_outlined,
@@ -84,10 +89,13 @@ class FirstTabBarViewWiget extends StatelessWidget {
                   item.timeVisit = '';
                   item.save();
                 },
-                child: SightCard(
-                  cardSign: item,
-                  model: 2,
-                  key: ValueKey(item.name),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: SightCard(
+                    cardSign: item,
+                    model: 2,
+                    key: ValueKey(item.name),
+                  ),
                 ),
               ),
         ];
@@ -98,9 +106,17 @@ class FirstTabBarViewWiget extends StatelessWidget {
           );
         }
 
-        return ListView(
+        return ReorderableListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           key: const PageStorageKey<String>('List liked cards'),
           children: listOfWidgets,
+          onReorder: (oldIndex, newIdex) {
+            if (newIdex > oldIndex) {
+              newIdex -= 1;
+            }
+            final listItem = listOfWidgets.removeAt(oldIndex);
+            listOfWidgets.insert(newIdex, listItem);
+          },
         );
       },
     );
@@ -118,14 +134,42 @@ class SecondTabBarViewWiget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: sightBox.listenable(),
-      builder: (BuildContext context, Box<Sight> box, _) {
-        final listOfWigets = <SightCard>[
+      builder: (context, Box<Sight> box, _) {
+        final listOfWigets = [
           for (var item in box.values)
             if (item.visited)
-              SightCard(
-                cardSign: item,
-                model: 3,
-                key: ValueKey(item.name),
+              Dismissible(
+                direction: DismissDirection.endToStart,
+                dismissThresholds: const {
+                  DismissDirection.endToStart: 0.2,
+                },
+                dragStartBehavior: DragStartBehavior.down,
+                key: Key(item.name),
+                background: Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    color: Colors.red,
+                  ),
+                  alignment: Alignment.centerRight,
+                  child: const Icon(
+                    Icons.delete_forever_outlined,
+                    size: 32,
+                  ),
+                ),
+                onDismissed: (dir) {
+                  item.visited = false;
+                  item.timeVisit = '';
+                  item.save();
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: SightCard(
+                    cardSign: item,
+                    model: 3,
+                    key: ValueKey(item.name),
+                  ),
+                ),
               ),
         ];
 
@@ -136,9 +180,17 @@ class SecondTabBarViewWiget extends StatelessWidget {
           );
         }
 
-        return ListView(
+        return ReorderableListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           key: const PageStorageKey<String>('List visited cards'),
           children: listOfWigets,
+          onReorder: (oldIndex, newIdex) {
+            if (newIdex > oldIndex) {
+              newIdex -= 1;
+            }
+            final listItem = listOfWigets.removeAt(oldIndex);
+            listOfWigets.insert(newIdex, listItem);
+          },
         );
       },
     );

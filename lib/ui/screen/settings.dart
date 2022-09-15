@@ -93,7 +93,21 @@ class _SettingsState extends State<Settings> {
               ),
               onPressed: () {
                 Navigator.of(context).pushNamed(AppStrings.tutorialScreen);
-                // Navigator.of(context).pushNamed('test');
+              },
+            ),
+          ),
+          ListTile(
+            title: Text(
+              AppStrings.scrOnboardingScreenState,
+              style: themeCont.textTheme.labelMedium,
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.import_contacts_outlined,
+                color: themeCont.buttonColor,
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppStrings.onboardingScreen);
               },
             ),
           ),

@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-// import 'package:google_map_iframe/google_map_iframe.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:places/domain/sight.dart';
@@ -16,7 +15,7 @@ class GooglMap extends StatefulWidget {
 }
 
 class _GooglMapState extends State<GooglMap> {
-  LatLng position = LatLng(47.026455, 28.840455);
+  LatLng position = const LatLng(47.026455, 28.840455);
 
   @override
   void initState() {
@@ -26,6 +25,7 @@ class _GooglMapState extends State<GooglMap> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final listOfSights = Hive.box<Sight>(AppStrings.boxSights);
     final setOfMarkers = listOfSights.values
         .map(
@@ -33,9 +33,11 @@ class _GooglMapState extends State<GooglMap> {
             markerId: MarkerId(
               e.name,
             ),
-            infoWindow: InfoWindow(title: e.name),
+            infoWindow: InfoWindow(title: e.name, snippet: e.details),
             position: LatLng(e.lat, e.lon),
-            draggable: true,
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueMagenta,
+            ),
             onDrag: (pos) {
               setState(() {
                 listOfSights.get(e.name)!
@@ -49,8 +51,8 @@ class _GooglMapState extends State<GooglMap> {
         .toSet()
       ..add(
         Marker(
-          markerId: MarkerId('Мое местоположение'),
-          infoWindow: InfoWindow(title: 'Мое местоположение'),
+          markerId: const MarkerId(AppStrings.scrMapNewSight),
+          infoWindow: const InfoWindow(title: AppStrings.scrMapNewSight),
           icon: BitmapDescriptor.defaultMarkerWithHue(100),
           position: position,
           draggable: true,
@@ -78,7 +80,7 @@ class _GooglMapState extends State<GooglMap> {
             // padding: const EdgeInsets.all(50),
 
             // Тип отрысовываемой карты(Фото города или схематический рисунок)
-            // mapType: MapType.hybrid,
+            mapType: MapType.hybrid,
             markers: setOfMarkers,
             initialCameraPosition: CameraPosition(
               target: position,
@@ -87,36 +89,43 @@ class _GooglMapState extends State<GooglMap> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 48,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        color: Colors.transparent,
-        child: InkWell(
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          onTap: () {
-            Navigator.of(context).pop(position);
-          },
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
-              // color: selectedCategory.isNotEmpty
-              //     ? theme.buttonColor
-              //     : theme.cardColor,
-            ),
-            child: Center(
-              child: Text(
-                AppStrings.buttonSave.toUpperCase(),
-                // style: selectedCategory.isNotEmpty
-                //     ? AppTextStyles.button
-                //     : AppTextStyles.button.copyWith(
-                //         color: AppColors.inactiveBlack.withOpacity(0.56),
-                //       ),
-              ),
-            ),
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).pop(position),
+        child: Icon(
+          Icons.maps_ugc_outlined,
+          color: theme.buttonColor,
         ),
       ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      // Container(
+      //   height: 48,
+      //   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      //   color: Colors.transparent,
+      //   child: InkWell(
+      //     highlightColor: Colors.transparent,
+      //     splashColor: Colors.transparent,
+      //     onTap: () {
+      //       Navigator.of(context).pop(position);
+      //     },
+      //     child: DecoratedBox(
+      //       decoration: BoxDecoration(
+      //         borderRadius: const BorderRadius.all(Radius.circular(12)),
+      //         color: theme.buttonColor,
+      //       ),
+      //       child: Center(
+      //         child: Text(
+      //           AppStrings.buttonSave.toUpperCase(),
+      //           // style: selectedCategory.isNotEmpty
+      //           //     ? AppTextStyles.button
+      //           //     : AppTextStyles.button.copyWith(
+      //           //         color: AppColors.inactiveBlack.withOpacity(0.56),
+      //           //       ),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 

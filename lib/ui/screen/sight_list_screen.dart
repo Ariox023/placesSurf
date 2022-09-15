@@ -74,9 +74,9 @@ class _SightListScreenState extends State<SightListScreen> {
       body: Column(
         children: [
           SearchField(controller: _serchEditionController),
-          const SizedBox(
-            height: 34,
-          ),
+          // const SizedBox(
+          //   height: 34,
+          // ),
           ValueListenableBuilder(
             valueListenable: sightBox.listenable(),
             builder: (BuildContext context, Box<Sight> box, _) {

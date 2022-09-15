@@ -26,5 +26,8 @@ class AppIcons {
   static const cafe = 'res/icons/cafe.svg';
   static const iconChose = 'res/icons/tick_choice.svg';
   static const iconRemove = 'res/icons/clear.svg';
+  static const iconTutorialFrame1 = 'res/icons/TutorialFrame1.svg';
+  static const iconTutorialFrame2 = 'res/icons/TutorialFrame2.svg';
+  static const iconTutorialFrame3 = 'res/icons/TutorialFrame3.svg';
   AppIcons._();
 }
