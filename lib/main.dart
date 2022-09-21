@@ -14,6 +14,7 @@ import 'package:places/ui/screen/add_sight_screen.dart';
 import 'package:places/ui/screen/categories.dart';
 import 'package:places/ui/screen/filters_screen.dart';
 import 'package:places/ui/screen/map.dart';
+import 'package:places/ui/screen/onboarding_screen.dart';
 import 'package:places/ui/screen/res/themes.dart';
 import 'package:places/ui/screen/settings.dart';
 import 'package:places/ui/screen/sight_details.dart';
@@ -118,6 +119,7 @@ class App extends StatelessWidget {
             AppStrings.addSightScreen: (context) => const AddSightScreen(),
             AppStrings.categoriesScreen: (context) => const Categories(),
             AppStrings.mapScreen: (context) => const GooglMap(),
+            AppStrings.onboardingScreen: (context) => const OnboardingScreen(),
           },
           home: const SightListScreen(),
         );

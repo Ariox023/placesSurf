@@ -16,6 +16,7 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  final PageController _controller = PageController();
   int _currentPageIndex = 0;
 
   @override
@@ -31,6 +32,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               onPressed: () {
                 setState(() {
                   _currentPageIndex++;
+                  _controller.animateToPage(
+                    _currentPageIndex,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.decelerate,
+                  );
                 });
               },
               child: Text(
@@ -43,6 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Stack(
         children: [
           PageView(
+            controller: _controller,
             children: const [
               FirstTabBarViewWiget(),
               SecondTabBarViewWiget(),
@@ -55,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
           ),
           Positioned(
-            bottom: 10,
+            bottom: 80,
             left: 0,
             right: 0,
             child: Row(
@@ -63,11 +70,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: List.generate(3, (i) {
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 10,
-                  height: 10,
+                  width: _currentPageIndex == i ? 24 : 8,
+                  height: 8,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _currentPageIndex == i ? Colors.blue : Colors.grey,
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    color: _currentPageIndex == i
+                        ? AppColors.greenDetails
+                        : AppColors.inactiveBlack,
                   ),
                 );
               }).toList(),
@@ -82,6 +91,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               color: theme.buttonColor,
               func: () => setState(() {
                 _currentPageIndex = 0;
+                _controller.animateToPage(
+                  0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.decelerate,
+                );
               }),
             )
           : null,
@@ -95,27 +109,39 @@ class FirstTabBarViewWiget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
 
-    return Center(
-      child: Column(
-        children: [
-          SvgPicture.asset(
-            AppIcons.iconTutorialFrame1,
-            color: theme.backgroundColor,
-          ),
-          Text(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          AppIcons.iconTutorialFrame1,
+          color: theme.textTheme.labelMedium?.color,
+        ),
+        const SizedBox(
+          height: 42,
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width - 104),
+          child: Text(
             AppStrings.scrOnboardingScreenFirstPage1,
             style: theme.textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-          Text(
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width - 104),
+          child: Text(
             AppStrings.scrOnboardingScreenFirstPage2,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: AppColors.secondary2),
             textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -126,27 +152,39 @@ class SecondTabBarViewWiget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
 
-    return Center(
-      child: Column(
-        children: [
-          SvgPicture.asset(
-            AppIcons.iconTutorialFrame2,
-            color: theme.backgroundColor,
-          ),
-          Text(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          AppIcons.iconTutorialFrame2,
+          color: theme.textTheme.labelMedium?.color,
+        ),
+        const SizedBox(
+          height: 42,
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width - 104),
+          child: Text(
             AppStrings.scrOnboardingScreenSecondPage1,
             style: theme.textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-          Text(
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width - 104),
+          child: Text(
             AppStrings.scrOnboardingScreenSecondPage2,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: AppColors.secondary2),
             textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -157,27 +195,39 @@ class ThirdTabBarViewWiget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
 
-    return Center(
-      child: Column(
-        children: [
-          SvgPicture.asset(
-            AppIcons.iconTutorialFrame3,
-            color: theme.backgroundColor,
-          ),
-          Text(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          AppIcons.iconTutorialFrame3,
+          color: theme.textTheme.labelMedium?.color,
+        ),
+        const SizedBox(
+          height: 42,
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width - 104),
+          child: Text(
             AppStrings.scrOnboardingScreenThirdPage1,
             style: theme.textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-          Text(
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: width - 104),
+          child: Text(
             AppStrings.scrOnboardingScreenThirdPage2,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: AppColors.secondary2),
             textAlign: TextAlign.center,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
