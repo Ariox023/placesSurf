@@ -26,137 +26,149 @@ class _SightDetailsState extends State<SightDetails> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBarDetails(card: card),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizeHeight24(),
-              Text(
-                card.name,
-                style: theme.textTheme.titleMedium,
-              ),
-              Row(
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   toolbarHeight: 0,
+      // ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            expandedHeight: 250,
+            flexibleSpace: AppBarDetails(card: card),
+          ),
+          SliverFillRemaining(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizeHeight24(),
                   Text(
-                    card.type,
-                    style: theme.textTheme.headlineSmall,
+                    card.name,
+                    style: theme.textTheme.titleMedium,
                   ),
-                  const SizedBox(
-                    width: 16,
+                  Row(
+                    children: [
+                      Text(
+                        card.type,
+                        style: theme.textTheme.headlineSmall,
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        AppStrings.scrTimeDetailScreen,
+                        style: theme.textTheme.labelSmall,
+                      ),
+                    ],
                   ),
+                  const SizeHeight24(),
                   Text(
-                    AppStrings.scrTimeDetailScreen,
-                    style: theme.textTheme.labelSmall,
+                    card.details,
+                    style: theme.textTheme.bodyMedium,
                   ),
-                ],
-              ),
-              const SizeHeight24(),
-              Text(
-                card.details,
-                style: theme.textTheme.bodyMedium,
-              ),
-              const SizeHeight24(),
-              Ink(
-                decoration: BoxDecoration(
-                  color: theme.buttonColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                ),
-                child: InkWell(
-                  highlightColor: Colors.transparent,
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  splashColor: theme.buttonColor.withGreen(199),
-                  child: SizedBox(
-                    height: 48,
-                    width: double.infinity,
-                    // decoration: BoxDecoration(
-                    //   color: theme.buttonColor,
-                    //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-                    // ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.goWhite,
-                          height: 24,
-                          width: 24,
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        const Text(
-                          AppStrings.scrButtonDetailScreen,
-                          style: AppTextStyles.button,
-                        ),
-                      ],
+                  const SizeHeight24(),
+                  Ink(
+                    decoration: BoxDecoration(
+                      color: theme.buttonColor,
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                     ),
-                  ),
-                  onTap: () {
-                    final hiveBox = Hive.box<Sight>(AppStrings.boxSights);
-                    final boxCard = hiveBox.get(card.name)!
-                      ..liked = false
-                      ..visited = true
-                      ..timeVisit = 'Test';
-                    hiveBox.put(card.name, boxCard);
-                    Navigator.of(context).pushReplacementNamed(
-                      AppStrings.visitedScreen,
-                      arguments: 1,
-                    );
-                  },
-                ),
-              ),
-              const SizeHeight24(),
-              const Divider(
-                height: 0.8,
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  Flexible(
                     child: InkWell(
                       highlightColor: Colors.transparent,
-                      child: FlexsibleButtonCalendar(card: card),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      splashColor: theme.buttonColor.withGreen(199),
+                      child: SizedBox(
+                        height: 48,
+                        width: double.infinity,
+                        // decoration: BoxDecoration(
+                        //   color: theme.buttonColor,
+                        //   borderRadius: const BorderRadius.all(Radius.circular(12)),
+                        // ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.goWhite,
+                              height: 24,
+                              width: 24,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            const Text(
+                              AppStrings.scrButtonDetailScreen,
+                              style: AppTextStyles.button,
+                            ),
+                          ],
+                        ),
+                      ),
                       onTap: () {
-                        setState(
-                          () {
-                            showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(DateTime.now().year + 10),
-                            ).then(
-                              (value) {
-                                if (value != null) {
-                                  card.liked = true;
-                                  // ignore: cascade_invocations
-                                  card.timeVisit =
-                                      'Запланировано на: ${value.toLocal().day} ${DateFormat.MMM().format(value)} ${value.toLocal().year}';
-                                }
-                              },
-                            );
-                          },
+                        final hiveBox = Hive.box<Sight>(AppStrings.boxSights);
+                        final boxCard = hiveBox.get(card.name)!
+                          ..liked = false
+                          ..visited = true
+                          ..timeVisit = 'Test';
+                        hiveBox.put(card.name, boxCard);
+                        Navigator.of(context).pushReplacementNamed(
+                          AppStrings.visitedScreen,
+                          arguments: 1,
                         );
                       },
                     ),
                   ),
-                  Flexible(
-                    child: InkWell(
-                      highlightColor: Colors.transparent,
-                      onTap: () {
-                        card.liked = true;
-                      },
-                      child: FlexsibleButtonFavorited(card: card),
-                    ),
+                  const SizeHeight24(),
+                  const Divider(
+                    height: 0.8,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: InkWell(
+                          highlightColor: Colors.transparent,
+                          child: FlexsibleButtonCalendar(card: card),
+                          onTap: () {
+                            setState(
+                              () {
+                                showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(DateTime.now().year + 10),
+                                ).then(
+                                  (value) {
+                                    if (value != null) {
+                                      card.liked = true;
+                                      // ignore: cascade_invocations
+                                      card.timeVisit =
+                                          'Запланировано на: ${value.toLocal().day} ${DateFormat.MMM().format(value)} ${value.toLocal().year}';
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      Flexible(
+                        child: InkWell(
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            card.liked = true;
+                          },
+                          child: FlexsibleButtonFavorited(card: card),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
       bottomNavigationBar: const BottomBar(
         currentIndex: 1,

@@ -40,7 +40,7 @@ class _VisitingScreenState extends State<VisitingScreen> {
               sightBox: sightBox,
             ),
           ],
-          viewportFraction: 0.8,
+          // viewportFraction: 0.8,
         ),
         bottomNavigationBar: BottomBar(
           currentIndex: indexInt == 0 ? 2 : 1,

@@ -23,6 +23,8 @@ class SightListScreen extends StatefulWidget {
 }
 
 class _SightListScreenState extends State<SightListScreen> {
+  final filteredListOfSights = <String>[];
+  final sightBox = Hive.box<Sight>(AppStrings.boxSights);
   final _serchEditionController = TextEditingController();
   String query = '';
   List<Widget> listOfWidgets = [];
@@ -30,7 +32,6 @@ class _SightListScreenState extends State<SightListScreen> {
   @override
   void initState() {
     super.initState();
-
     _serchEditionController.addListener(_searchSignt);
   }
 
@@ -42,9 +43,7 @@ class _SightListScreenState extends State<SightListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final sightBox = Hive.box<Sight>(AppStrings.boxSights);
     final arguments = ModalRoute.of(context)?.settings.arguments;
-    final filteredListOfSights = <String>[];
     final theme = Theme.of(context);
 
     if (arguments == null) {
@@ -56,82 +55,122 @@ class _SightListScreenState extends State<SightListScreen> {
       filteredListOfSights.addAll(arguments);
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        toolbarHeight: 152,
-        centerTitle: false,
-        titleSpacing: 16,
-        elevation: 0,
-        titleTextStyle: theme.textTheme.titleLarge,
-        systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
-          statusBarColor: Colors.transparent,
-        ),
-        title: const _Text(),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          SearchField(controller: _serchEditionController),
-          // const SizedBox(
-          //   height: 34,
-          // ),
-          ValueListenableBuilder(
-            valueListenable: sightBox.listenable(),
-            builder: (BuildContext context, Box<Sight> box, _) {
-              listOfWidgets = <Widget>[
-                for (var item in box.values)
-                  if (cardFiltered(item) &&
-                      filteredListOfSights.contains(item.name))
-                    SightCard(
-                      key: ValueKey(item.name),
-                      cardSign: item,
-                    ),
-              ];
-              if (listOfWidgets.isEmpty) {
-                return const EmptyWidget(
-                  icon: AppIcons.search,
-                  subtitle: AppStrings.scrSightListScreenEmptyBodySubtitle,
-                  str: AppStrings.scrSightListScreenEmptyBodySubtitle2,
-                );
-              }
+    sightBox.listenable().addListener(() {
+      getListOfWigedts(listOfWidgets);
+      setState(() {});
+    });
 
-              return Expanded(
-                child: Scrollbar(
-                  child: RefreshIndicator(
-                    displacement: 0,
-                    color: Colors.red,
-                    strokeWidth: 2,
-                    triggerMode: RefreshIndicatorTriggerMode.anywhere,
-                    onRefresh: () async {
-                      setState(() {
-                        listOfWidgets.clear();
-                        listOfWidgets = <Widget>[
-                          for (var item in box.values)
-                            if (cardFiltered(item) &&
-                                filteredListOfSights.contains(item.name))
-                              SightCard(
-                                key: ValueKey(item.name),
-                                cardSign: item,
-                              ),
-                        ];
-                      });
-                    },
-                    child: ListView(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
-                      ),
-                      keyboardDismissBehavior:
-                          ScrollViewKeyboardDismissBehavior.onDrag,
-                      children: listOfWidgets,
-                    ),
-                  ),
-                ),
-              );
-            },
+    getListOfWigedts(listOfWidgets);
+
+    return Scaffold(
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,
+      //   backgroundColor: Colors.transparent,
+      //   toolbarHeight: 152,
+      //   centerTitle: false,
+      //   titleSpacing: 16,
+      //   elevation: 0,
+      //   titleTextStyle: theme.textTheme.titleLarge,
+      // systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
+      //   statusBarColor: Colors.transparent,
+      // ),
+      //   title: const _Text(),
+      // ),
+      resizeToAvoidBottomInset: false,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            automaticallyImplyLeading: false,
+            backgroundColor: theme.backgroundColor,
+            expandedHeight: 152,
+            titleTextStyle: theme.textTheme.titleLarge,
+            systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
+              statusBarColor: Colors.transparent,
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              title: const _Text(),
+              background: ColoredBox(color: theme.backgroundColor),
+            ),
           ),
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: theme.backgroundColor,
+            titleTextStyle: theme.textTheme.titleLarge,
+            systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
+              statusBarColor: Colors.transparent,
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              title: SearchField(controller: _serchEditionController),
+            ),
+          ),
+          if (listOfWidgets.isEmpty)
+            const SliverFillRemaining(
+              child: EmptyWidget(
+                icon: AppIcons.search,
+                subtitle: AppStrings.scrSightListScreenEmptyBodySubtitle,
+                str: AppStrings.scrSightListScreenEmptyBodySubtitle2,
+              ),
+            ),
+          if (listOfWidgets.isNotEmpty)
+            SliverList(
+              delegate: SliverChildListDelegate(listOfWidgets),
+            ),
+          // SliverFillRemaining(
+          //   child: ValueListenableBuilder(
+          //     valueListenable: sightBox.listenable(),
+          //     builder: (BuildContext context, Box<Sight> box, _) {
+          //       listOfWidgets = <Widget>[
+          //         for (var item in box.values)
+          //           if (cardFiltered(item) &&
+          //               filteredListOfSights.contains(item.name))
+          //             SightCard(
+          //               key: ValueKey(item.name),
+          //               cardSign: item,
+          //             ),
+          //       ];
+          //       if (listOfWidgets.isEmpty) {
+          //         return const EmptyWidget(
+          //           icon: AppIcons.search,
+          //           subtitle: AppStrings.scrSightListScreenEmptyBodySubtitle,
+          //           str: AppStrings.scrSightListScreenEmptyBodySubtitle2,
+          //         );
+          //       }
+
+          //       return Scrollbar(
+          //         child: RefreshIndicator(
+          //           displacement: 0,
+          //           color: Colors.red,
+          //           strokeWidth: 2,
+          //           triggerMode: RefreshIndicatorTriggerMode.anywhere,
+          //           onRefresh: () async {
+          //             setState(() {
+          //               listOfWidgets.clear();
+          //               listOfWidgets = <Widget>[
+          //                 for (var item in box.values)
+          //                   if (cardFiltered(item) &&
+          //                       filteredListOfSights.contains(item.name))
+          //                     SightCard(
+          //                       key: ValueKey(item.name),
+          //                       cardSign: item,
+          //                     ),
+          //               ];
+          //             });
+          //           },
+          //           child: ListView(
+          //             shrinkWrap: true,
+          //             physics: const BouncingScrollPhysics(
+          //               parent: AlwaysScrollableScrollPhysics(),
+          //             ),
+          //             keyboardDismissBehavior:
+          //                 ScrollViewKeyboardDismissBehavior.onDrag,
+          //             children: listOfWidgets,
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
       bottomNavigationBar: const BottomBar(),
@@ -169,6 +208,19 @@ class _SightListScreenState extends State<SightListScreen> {
         return true;
       } else {
         return false;
+      }
+    }
+  }
+
+  void getListOfWigedts(List<Widget> listOfWidgets) {
+    listOfWidgets.clear();
+
+    for (final item in sightBox.values) {
+      if (cardFiltered(item) && filteredListOfSights.contains(item.name)) {
+        listOfWidgets.add(SightCard(
+          key: ValueKey(item.name),
+          cardSign: item,
+        ));
       }
     }
   }

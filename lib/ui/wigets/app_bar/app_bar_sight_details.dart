@@ -1,4 +1,3 @@
-// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:places/domain/sight.dart';
 import 'package:places/presets/colors/colors.dart';
@@ -33,38 +32,6 @@ class _AppBarDetailsState extends State<AppBarDetails> {
       automaticallyImplyLeading: false,
       flexibleSpace: Stack(
         children: [
-          // CarouselSlider.builder(
-          //   itemCount: card.url.length,
-          //   itemBuilder: (context, index, realIndex) {
-          //     return Stack(
-          //       children: [
-          //         ImageNetworkWiget(
-          //           url: card.url[index],
-          //           gradient: AppGradients.whiteImageGradient,
-          //         ),
-          //         const ContainerWithOpacityForImages(),
-          //       ],
-          //     );
-          //   },
-          // items: card.url
-          //     .map(
-          //       (e) => Stack(
-          //         children: [
-          //           ImageNetworkWiget(
-          //             url: e,
-          //             gradient: AppGradients.whiteImageGradient,
-          //           ),
-          //           const ContainerWithOpacityForImages(),
-          //         ],
-          //       ),
-          //     )
-          //     .toList(),
-          //   options: CarouselOptions(
-          //     height: 384,
-          //     padEnds: false,
-          //     autoPlayCurve: Curves.fastLinearToSlowEaseIn,
-          //   ),
-          // ),
           PageView.builder(
             itemBuilder: (context, index) {
               return Stack(
@@ -94,12 +61,10 @@ class _AppBarDetailsState extends State<AppBarDetails> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(widget.card.url.length, (i) {
                 return Container(
-                  // margin: const EdgeInsets.symmetric(horizontal: 5),
                   width: MediaQuery.of(context).size.width /
                       widget.card.url.length,
                   height: 10,
                   decoration: BoxDecoration(
-                    // shape: BoxShape.circle,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                     color: _currentPageIndex == i
                         ? AppColors.whiteMain
