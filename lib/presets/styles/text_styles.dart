@@ -28,7 +28,7 @@ class AppTextStyles {
 
   static const smallBold = TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
     height: 1.285,
   );
 

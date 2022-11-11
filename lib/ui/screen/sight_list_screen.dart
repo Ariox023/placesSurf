@@ -1,9 +1,13 @@
+// ignore_for_file: avoid_types_on_closure_parameters
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:places/mocks.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:places/domain/sight.dart';
 import 'package:places/presets/colors/colors.dart';
 import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
+import 'package:places/ui/wigets/bottom_navigation_bar/bottom_navigation_bar.dart';
 
 /// Экран 'Список интересных мест'
 class SightListScreen extends StatefulWidget {
@@ -16,6 +20,8 @@ class SightListScreen extends StatefulWidget {
 class _SightListScreenState extends State<SightListScreen> {
   @override
   Widget build(BuildContext context) {
+    final sightBox = Hive.box<Sight>('box_for_Sights');
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -30,18 +36,23 @@ class _SightListScreenState extends State<SightListScreen> {
         systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
           statusBarColor: Colors.transparent,
         ),
-        title: const _RichText(),
+        title: const _Text(),
       ),
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: mocks
-              .map((e) => SightCard(
-                    cardSign: e,
-                  ))
-              .toList(),
-        ),
+      body: ValueListenableBuilder(
+        valueListenable: sightBox.listenable(),
+        builder: (BuildContext context, Box<Sight> box, _) {
+          return ListView(
+            children: [
+              for (var item in box.values)
+                SightCard(
+                  cardSign: item,
+                ),
+            ],
+          );
+        },
       ),
+      bottomNavigationBar: const BottomBar(),
     );
   }
 }
@@ -55,12 +66,13 @@ class _Text extends StatelessWidget {
     return Text(
       'Список\nинтересных мест',
       style: AppBarTheme.of(context).titleTextStyle,
-      textAlign: TextAlign.left,
+      textAlign: TextAlign.start,
     );
   }
 }
 
 /// RichText
+// ignore: unused_element
 class _RichText extends StatelessWidget {
   const _RichText({Key? key}) : super(key: key);
 
