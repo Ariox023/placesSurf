@@ -24,5 +24,10 @@ class AppColors {
   static const blackDark = Color(0xff1A1A20);
   static const blackMain = Color(0xff21222C);
 
+  static const mainDark = Color.fromRGBO(33, 34, 44, 1);
+  static const backgroundDark = Color.fromRGBO(26, 26, 32, 1);
+
+  static const rippleSpalsh = Color.fromRGBO(196, 196, 196, 0.5);
+
   AppColors._();
 }

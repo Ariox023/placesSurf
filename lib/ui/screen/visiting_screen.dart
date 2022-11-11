@@ -1,18 +1,17 @@
-// ignore_for_file: avoid_types_on_closure_parameters
+// ignore_for_file: avoid_types_on_closure_parameters, cascade_invocations
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:places/domain/sight.dart';
-import 'package:places/presets/colors/colors.dart';
 import 'package:places/presets/icons/icons.dart';
 import 'package:places/presets/strings/app_strings.dart';
-import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/ui/screen/sight_card.dart';
 import 'package:places/ui/wigets/app_bar/app_bar_visiting_screen.dart';
 import 'package:places/ui/wigets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:places/ui/wigets/containers/empty_body.dart';
 
 class VisitingScreen extends StatefulWidget {
-  static const routeName = '/vizited';
   const VisitingScreen({
     Key? key,
   }) : super(key: key);
@@ -24,7 +23,7 @@ class VisitingScreen extends StatefulWidget {
 class _VisitingScreenState extends State<VisitingScreen> {
   @override
   Widget build(BuildContext context) {
-    final sightBox = Hive.box<Sight>('box_for_Sights');
+    final sightBox = Hive.box<Sight>(AppStrings.boxSights);
 
     final index = ModalRoute.of(context)?.settings.arguments ?? 0;
     final indexInt = int.parse(index.toString());
@@ -33,7 +32,6 @@ class _VisitingScreenState extends State<VisitingScreen> {
       length: 2,
       initialIndex: indexInt,
       child: Scaffold(
-        backgroundColor: AppColors.white,
         appBar: const AppBarVisitingSceen(),
         body: TabBarView(
           children: [
@@ -42,6 +40,7 @@ class _VisitingScreenState extends State<VisitingScreen> {
               sightBox: sightBox,
             ),
           ],
+          // viewportFraction: 0.8,
         ),
         bottomNavigationBar: BottomBar(
           currentIndex: indexInt == 0 ? 2 : 1,
@@ -62,23 +61,62 @@ class FirstTabBarViewWiget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: sightBox.listenable(),
-      builder: (BuildContext context, Box<Sight> box, _) {
+      builder: (context, Box<Sight> box, _) {
         final listOfWidgets = [
           for (var item in box.values)
             if (item.liked)
-              SightCard(
-                cardSign: item,
-                model: 2,
+              Dismissible(
+                direction: DismissDirection.endToStart,
+                dismissThresholds: const {
+                  DismissDirection.endToStart: 0.2,
+                },
+                dragStartBehavior: DragStartBehavior.down,
+                key: Key(item.name),
+                background: Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    color: Colors.red,
+                  ),
+                  alignment: Alignment.centerRight,
+                  child: const Icon(
+                    Icons.delete_forever_outlined,
+                    size: 32,
+                  ),
+                ),
+                onDismissed: (dir) {
+                  item.liked = false;
+                  item.timeVisit = '';
+                  item.save();
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: SightCard(
+                    cardSign: item,
+                    model: 2,
+                    key: ValueKey(item.name),
+                  ),
+                ),
               ),
         ];
         if (listOfWidgets.isEmpty) {
           return const EmptyWidget(
             icon: AppIcons.card,
+            str: AppStrings.scrTabBarViewLikedEmptyBody,
           );
         }
 
-        return ListView(
+        return ReorderableListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          key: const PageStorageKey<String>('List liked cards'),
           children: listOfWidgets,
+          onReorder: (oldIndex, newIdex) {
+            if (newIdex > oldIndex) {
+              newIdex -= 1;
+            }
+            final listItem = listOfWidgets.removeAt(oldIndex);
+            listOfWidgets.insert(newIdex, listItem);
+          },
         );
       },
     );
@@ -95,70 +133,66 @@ class SecondTabBarViewWiget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      child: Container(color: Colors.red),
       valueListenable: sightBox.listenable(),
-      builder: (BuildContext context, Box<Sight> box, _) {
-        final listOfWigets = <SightCard>[
+      builder: (context, Box<Sight> box, _) {
+        final listOfWigets = [
           for (var item in box.values)
             if (item.visited)
-              SightCard(
-                cardSign: item,
-                model: 3,
+              Dismissible(
+                direction: DismissDirection.endToStart,
+                dismissThresholds: const {
+                  DismissDirection.endToStart: 0.2,
+                },
+                dragStartBehavior: DragStartBehavior.down,
+                key: Key(item.name),
+                background: Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    color: Colors.red,
+                  ),
+                  alignment: Alignment.centerRight,
+                  child: const Icon(
+                    Icons.delete_forever_outlined,
+                    size: 32,
+                  ),
+                ),
+                onDismissed: (dir) {
+                  item.visited = false;
+                  item.timeVisit = '';
+                  item.save();
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: SightCard(
+                    cardSign: item,
+                    model: 3,
+                    key: ValueKey(item.name),
+                  ),
+                ),
               ),
         ];
 
         if (listOfWigets.isEmpty) {
           return const EmptyWidget(
             icon: AppIcons.go,
-            index: 2,
+            str: AppStrings.scrTabBarViewVisitedEmptyBody,
           );
         }
 
-        return ListView(
+        return ReorderableListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          key: const PageStorageKey<String>('List visited cards'),
           children: listOfWigets,
+          onReorder: (oldIndex, newIdex) {
+            if (newIdex > oldIndex) {
+              newIdex -= 1;
+            }
+            final listItem = listOfWigets.removeAt(oldIndex);
+            listOfWigets.insert(newIdex, listItem);
+          },
         );
       },
-    );
-  }
-}
-
-class EmptyWidget extends StatelessWidget {
-  final String icon;
-  final int index;
-  const EmptyWidget({
-    Key? key,
-    required this.icon,
-    this.index = 1,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(icon),
-          const SizedBox(
-            height: 24,
-          ),
-          Text(
-            AppStrings.scrTabBarViewEmptyBody,
-            style:
-                AppTextStyles.subtitle.copyWith(color: AppColors.inactiveBlack),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 53),
-            child: Text(
-              index == 1
-                  ? AppStrings.scrTabBarViewLikedEmptyBody
-                  : AppStrings.scrTabBarViewVisitedEmptyBody,
-              style:
-                  AppTextStyles.small.copyWith(color: AppColors.inactiveBlack),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

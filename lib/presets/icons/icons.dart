@@ -12,9 +12,22 @@ class AppIcons {
   static const list = 'res/icons/List.svg';
   static const map = 'res/icons/Map.svg';
   static const settings = 'res/icons/Settings.svg';
-
   static const listFull = 'res/icons/List_Full.svg';
   static const mapFull = 'res/icons/Map_Full.svg';
   static const settingsFull = 'res/icons/Settings_Full.svg';
+  static const search = 'res/icons/Search.svg';
+  static const searchMin = 'res/icons/Search_min.svg';
+  static const filter = 'res/icons/Filter.svg';
+  static const museum = 'res/icons/museum.svg';
+  static const hotel = 'res/icons/hotel.svg';
+  static const park = 'res/icons/park.svg';
+  static const particularPlace = 'res/icons/particular_place.svg';
+  static const restourant = 'res/icons/Restourant.svg';
+  static const cafe = 'res/icons/cafe.svg';
+  static const iconChose = 'res/icons/tick_choice.svg';
+  static const iconRemove = 'res/icons/clear.svg';
+  static const iconTutorialFrame1 = 'res/icons/TutorialFrame1.svg';
+  static const iconTutorialFrame2 = 'res/icons/TutorialFrame2.svg';
+  static const iconTutorialFrame3 = 'res/icons/TutorialFrame3.svg';
   AppIcons._();
 }
