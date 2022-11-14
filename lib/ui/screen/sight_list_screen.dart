@@ -45,6 +45,7 @@ class _SightListScreenState extends State<SightListScreen> {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     final theme = Theme.of(context);
+    const title = _Text();
 
     if (arguments == null) {
       for (final item in sightBox.values) {
@@ -63,19 +64,6 @@ class _SightListScreenState extends State<SightListScreen> {
     getListOfWigedts(listOfWidgets);
 
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   backgroundColor: Colors.transparent,
-      //   toolbarHeight: 152,
-      //   centerTitle: false,
-      //   titleSpacing: 16,
-      //   elevation: 0,
-      //   titleTextStyle: theme.textTheme.titleLarge,
-      // systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
-      //   statusBarColor: Colors.transparent,
-      // ),
-      //   title: const _Text(),
-      // ),
       resizeToAvoidBottomInset: false,
       body: CustomScrollView(
         slivers: <Widget>[
@@ -89,7 +77,8 @@ class _SightListScreenState extends State<SightListScreen> {
               statusBarColor: Colors.transparent,
             ),
             flexibleSpace: FlexibleSpaceBar(
-              title: const _Text(),
+              title: title,
+              titlePadding: const EdgeInsets.symmetric(horizontal: 16),
               background: ColoredBox(color: theme.backgroundColor),
             ),
           ),
@@ -101,6 +90,7 @@ class _SightListScreenState extends State<SightListScreen> {
               statusBarColor: Colors.transparent,
             ),
             flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.zero,
               title: SearchField(controller: _serchEditionController),
             ),
           ),
@@ -116,61 +106,6 @@ class _SightListScreenState extends State<SightListScreen> {
             SliverList(
               delegate: SliverChildListDelegate(listOfWidgets),
             ),
-          // SliverFillRemaining(
-          //   child: ValueListenableBuilder(
-          //     valueListenable: sightBox.listenable(),
-          //     builder: (BuildContext context, Box<Sight> box, _) {
-          //       listOfWidgets = <Widget>[
-          //         for (var item in box.values)
-          //           if (cardFiltered(item) &&
-          //               filteredListOfSights.contains(item.name))
-          //             SightCard(
-          //               key: ValueKey(item.name),
-          //               cardSign: item,
-          //             ),
-          //       ];
-          //       if (listOfWidgets.isEmpty) {
-          //         return const EmptyWidget(
-          //           icon: AppIcons.search,
-          //           subtitle: AppStrings.scrSightListScreenEmptyBodySubtitle,
-          //           str: AppStrings.scrSightListScreenEmptyBodySubtitle2,
-          //         );
-          //       }
-
-          //       return Scrollbar(
-          //         child: RefreshIndicator(
-          //           displacement: 0,
-          //           color: Colors.red,
-          //           strokeWidth: 2,
-          //           triggerMode: RefreshIndicatorTriggerMode.anywhere,
-          //           onRefresh: () async {
-          //             setState(() {
-          //               listOfWidgets.clear();
-          //               listOfWidgets = <Widget>[
-          //                 for (var item in box.values)
-          //                   if (cardFiltered(item) &&
-          //                       filteredListOfSights.contains(item.name))
-          //                     SightCard(
-          //                       key: ValueKey(item.name),
-          //                       cardSign: item,
-          //                     ),
-          //               ];
-          //             });
-          //           },
-          //           child: ListView(
-          //             shrinkWrap: true,
-          //             physics: const BouncingScrollPhysics(
-          //               parent: AlwaysScrollableScrollPhysics(),
-          //             ),
-          //             keyboardDismissBehavior:
-          //                 ScrollViewKeyboardDismissBehavior.onDrag,
-          //             children: listOfWidgets,
-          //           ),
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
         ],
       ),
       bottomNavigationBar: const BottomBar(),
@@ -217,10 +152,12 @@ class _SightListScreenState extends State<SightListScreen> {
 
     for (final item in sightBox.values) {
       if (cardFiltered(item) && filteredListOfSights.contains(item.name)) {
-        listOfWidgets.add(SightCard(
-          key: ValueKey(item.name),
-          cardSign: item,
-        ));
+        listOfWidgets.add(
+          SightCard(
+            key: ValueKey(item.name),
+            cardSign: item,
+          ),
+        );
       }
     }
   }

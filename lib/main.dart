@@ -19,6 +19,7 @@ import 'package:places/ui/screen/res/themes.dart';
 import 'package:places/ui/screen/settings.dart';
 import 'package:places/ui/screen/sight_details.dart';
 import 'package:places/ui/screen/sight_list_screen.dart';
+import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/tutorial_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 
@@ -120,8 +121,10 @@ class App extends StatelessWidget {
             AppStrings.categoriesScreen: (context) => const Categories(),
             AppStrings.mapScreen: (context) => const GooglMap(),
             AppStrings.onboardingScreen: (context) => const OnboardingScreen(),
+            AppStrings.splashScreen: (context) => const SplashScreen(),
+            AppStrings.sightListScreen: (context) => const SightListScreen(),
           },
-          home: const SightListScreen(),
+          home: const SplashScreen(),
         );
       },
     );

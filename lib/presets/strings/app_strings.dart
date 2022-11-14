@@ -24,6 +24,8 @@ class AppStrings {
   static const String categoriesScreen = '/categories';
   static const String mapScreen = '/map';
   static const String onboardingScreen = '/initial';
+  static const String splashScreen = '/splash';
+  static const String sightListScreen = '/list';
 
   // Настройки для отбора мест сохраненные в Hivev
   static const String boxFilters = 'Filters';
