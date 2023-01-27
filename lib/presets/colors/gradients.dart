@@ -24,5 +24,14 @@ class AppGradients {
     ],
   );
 
+  static Gradient addSplashGradient = const LinearGradient(
+    begin: Alignment(-2.3, 0),
+    end: Alignment(1.8, 0),
+    colors: [
+      Color.fromRGBO(252, 221, 61, 1),
+      AppColors.greenDetails,
+    ],
+  );
+
   AppGradients._();
 }

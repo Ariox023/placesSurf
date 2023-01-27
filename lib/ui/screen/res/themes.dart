@@ -33,6 +33,7 @@ final lightTheme = ThemeData(
     bodySmall: AppTextStyles.text.copyWith(color: AppColors.greenDetails),
     displayMedium: AppTextStyles.smallBold.copyWith(color: AppColors.white),
     displaySmall: AppTextStyles.subtitle.copyWith(color: AppColors.whiteMain),
+    displayLarge: AppTextStyles.button.copyWith(color: AppColors.greenDetails),
   ),
   buttonColor: AppColors.whiteGreen,
   colorScheme: const ColorScheme.light().copyWith(
@@ -40,6 +41,7 @@ final lightTheme = ThemeData(
     onPrimary: AppColors.blackDark,
     tertiaryContainer: AppColors.blackDetails,
     secondary: AppColors.white,
+    background: AppColors.white,
   ),
   tabBarTheme: const TabBarTheme(
     labelColor: AppColors.white,
@@ -90,6 +92,7 @@ final darkTheme = ThemeData(
     bodySmall: AppTextStyles.text.copyWith(color: AppColors.greenDetails),
     displayMedium: AppTextStyles.smallBold.copyWith(color: AppColors.white),
     displaySmall: AppTextStyles.subtitle.copyWith(color: AppColors.white),
+    displayLarge: AppTextStyles.button.copyWith(color: AppColors.greenDetails),
   ),
   buttonColor: AppColors.blackGreen,
   canvasColor: AppColors.mainDark,
@@ -98,6 +101,7 @@ final darkTheme = ThemeData(
     onPrimary: AppColors.blackDark,
     tertiaryContainer: AppColors.white,
     secondary: AppColors.mainDark,
+    background: AppColors.mainDark,
   ),
   tabBarTheme: const TabBarTheme(
     labelColor: AppColors.secondary,

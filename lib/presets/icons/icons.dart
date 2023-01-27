@@ -29,5 +29,9 @@ class AppIcons {
   static const iconTutorialFrame1 = 'res/icons/TutorialFrame1.svg';
   static const iconTutorialFrame2 = 'res/icons/TutorialFrame2.svg';
   static const iconTutorialFrame3 = 'res/icons/TutorialFrame3.svg';
+  static const iconSpalsh = 'res/icons/Splash.svg';
+  static const iconPhoto = 'res/icons/Photo.svg';
+  static const iconFail = 'res/icons/Fail.svg';
+  static const iconCamera = 'res/icons/Camera.svg';
   AppIcons._();
 }

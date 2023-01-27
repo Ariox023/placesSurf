@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_void_async
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -19,6 +17,7 @@ import 'package:places/ui/screen/res/themes.dart';
 import 'package:places/ui/screen/settings.dart';
 import 'package:places/ui/screen/sight_details.dart';
 import 'package:places/ui/screen/sight_list_screen.dart';
+import 'package:places/ui/screen/splash_screen.dart';
 import 'package:places/ui/screen/tutorial_screen.dart';
 import 'package:places/ui/screen/visiting_screen.dart';
 
@@ -111,7 +110,9 @@ class App extends StatelessWidget {
           title: AppStrings.appTitle,
           initialRoute: AppStrings.maingsScreen,
           routes: {
-            AppStrings.detailsScreen: (context) => const SightDetails(),
+            AppStrings.detailsScreen: (context) => SightDetails(
+                  card: mocks[0],
+                ),
             AppStrings.visitedScreen: (context) => const VisitingScreen(),
             AppStrings.settingsScreen: (context) => const Settings(),
             AppStrings.filtersScreen: (context) => const FiltersScreen(),
@@ -120,8 +121,10 @@ class App extends StatelessWidget {
             AppStrings.categoriesScreen: (context) => const Categories(),
             AppStrings.mapScreen: (context) => const GooglMap(),
             AppStrings.onboardingScreen: (context) => const OnboardingScreen(),
+            AppStrings.splashScreen: (context) => const SplashScreen(),
+            AppStrings.sightListScreen: (context) => const SightListScreen(),
           },
-          home: const SightListScreen(),
+          home: const SplashScreen(),
         );
       },
     );

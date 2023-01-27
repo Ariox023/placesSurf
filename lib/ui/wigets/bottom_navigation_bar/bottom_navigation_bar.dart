@@ -53,7 +53,7 @@ class BottomBar extends StatelessWidget {
       landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
       onTap: (index) {
         if (index == 0) {
-          Navigator.of(context).pushNamed(AppStrings.maingsScreen);
+          Navigator.of(context).pushNamed(AppStrings.sightListScreen);
         } else if (index == 1) {
           Navigator.of(context).pushNamed(AppStrings.mapScreen);
         } else if (index == 2) {
