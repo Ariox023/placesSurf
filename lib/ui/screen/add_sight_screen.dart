@@ -13,7 +13,6 @@ import 'package:places/presets/icons/icons.dart';
 import 'package:places/presets/strings/app_strings.dart';
 import 'package:places/presets/styles/text_styles.dart';
 import 'package:places/ui/wigets/containers/conainer_for_image_network.dart';
-// import 'package:places/ui/wigets/text_fields/my_text_field.dart';
 
 class AddSightScreen extends StatefulWidget {
   const AddSightScreen({Key? key}) : super(key: key);
@@ -615,12 +614,169 @@ class AddImage extends StatelessWidget {
         : InkWell(
             borderRadius: BorderRadius.circular(12),
             highlightColor: Colors.transparent,
-            onTap: () async {
-              await inputDialog(context).then((value) {
-                if (value != null && value.isNotEmpty) {
-                  AdressNotification(adress: value).dispatch(context);
-                }
-              });
+            onTap: () {
+              final adreses = <String>[];
+
+              showModalBottomSheet<List<String>>(
+                constraints: const BoxConstraints(maxHeight: 216),
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            height: 48,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(8.0),
+                                topRight: Radius.circular(8.0),
+                              ),
+                              color: theme.backgroundColor,
+                            ),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.iconPhoto,
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                const SizedBox(
+                                  width: 13,
+                                ),
+                                const Text(
+                                  AppStrings.scrMapNewSightAddImageCamera,
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {},
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              color: theme.backgroundColor,
+                              height: 2,
+                            ),
+                            Container(
+                              color: theme.dividerTheme.color,
+                              height: 2,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          child: Container(
+                            height: 48,
+                            color: theme.backgroundColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.iconCamera,
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                const SizedBox(
+                                  width: 13,
+                                ),
+                                const Text(
+                                  AppStrings.scrMapNewSightAddImagePhoto,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              color: theme.backgroundColor,
+                              height: 2,
+                            ),
+                            Container(
+                              color: theme.dividerTheme.color,
+                              height: 2,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          child: Container(
+                            height: 48,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              color: theme.backgroundColor,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(12.0),
+                                bottomRight: Radius.circular(12.0),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  AppIcons.iconFail,
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                const SizedBox(
+                                  width: 13,
+                                ),
+                                const Text(
+                                  AppStrings.scrMapNewSightAddImageFail,
+                                ),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            inputDialog(context).then((value) {
+                              if (value != null && value.isNotEmpty) {
+                                adreses.add(value);
+                              }
+                            });
+                          },
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            height: 48,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12.0)),
+                              color: theme.backgroundColor,
+                            ),
+                            child: Center(
+                              child: Text(
+                                AppStrings.buttonCancellation.toUpperCase(),
+                                style: theme.textTheme.displayLarge,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ).then(
+                (value) => value?.map(
+                  (e) {
+                    AdressNotification(adress: e).dispatch(context);
+                  },
+                ),
+              );
             },
             child: Container(
               height: 72,
@@ -641,8 +797,7 @@ class AddImage extends StatelessWidget {
 
     return showDialog<String>(
       context: context,
-      barrierDismissible:
-          false, // dialog is dismissible with a tap on the barrier
+      barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
           title: const Text(AppStrings.scrMapNewSightAddImageTitle),

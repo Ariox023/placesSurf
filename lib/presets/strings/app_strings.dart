@@ -113,6 +113,9 @@ class AppStrings {
   static const String scrAddSightScreenDescriptionHint = 'Введите текст';
   static const String scrMapNewSight = 'Новое интересное место.';
   static const String scrMapNewSightAddImageTitle = 'Введите адрес изображения';
+  static const String scrMapNewSightAddImageCamera = 'Камера';
+  static const String scrMapNewSightAddImagePhoto = 'Фотография';
+  static const String scrMapNewSightAddImageFail = 'Файл';
 
   // Строки Начального экрана.
   static const String scrOnboardingScreenFirstPage1 =
@@ -128,5 +131,6 @@ class AppStrings {
   static const String scrOnboardingScreenThirdPage2 =
       'Делись самыми интересными и помоги нам стать лучше!';
   static const String scrOnboardingScreenThirdPageButton = 'На старт';
+
   AppStrings._();
 }

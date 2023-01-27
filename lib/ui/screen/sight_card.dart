@@ -8,6 +8,7 @@ import 'package:places/presets/colors/gradients.dart';
 import 'package:places/presets/icons/icons.dart';
 import 'package:places/presets/strings/app_strings.dart';
 import 'package:places/presets/styles/text_styles.dart';
+import 'package:places/ui/screen/sight_details.dart';
 import 'package:places/ui/wigets/containers/conainer_for_image_network.dart';
 import 'package:places/ui/wigets/containers/container_with_opacity_for_image.dart';
 
@@ -100,9 +101,27 @@ class SightCard extends StatelessWidget {
                     highlightColor: Colors.transparent,
                     radius: 100,
                     onTap: () {
-                      Navigator.of(context).pushNamed(
-                        AppStrings.detailsScreen,
-                        arguments: cardSign,
+                      showModalBottomSheet<void>(
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height -
+                              MediaQuery.of(context).size.height / 10,
+                          maxHeight: MediaQuery.of(context).size.height -
+                              MediaQuery.of(context).size.height / 10,
+                        ),
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(8.0),
+                              topRight: Radius.circular(8.0),
+                            ),
+                            child: SightDetails(
+                              card: cardSign,
+                            ),
+                          );
+                        },
                       );
                     },
                   ),

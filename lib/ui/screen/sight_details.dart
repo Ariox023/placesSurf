@@ -13,7 +13,8 @@ import 'package:places/ui/wigets/app_bar/app_bar_sight_details.dart';
 import 'package:places/ui/wigets/bottom_navigation_bar/bottom_navigation_bar.dart';
 
 class SightDetails extends StatefulWidget {
-  const SightDetails({Key? key}) : super(key: key);
+  final Sight card;
+  const SightDetails({Key? key, required this.card}) : super(key: key);
 
   @override
   State<SightDetails> createState() => _SightDetailsState();
@@ -22,7 +23,7 @@ class SightDetails extends StatefulWidget {
 class _SightDetailsState extends State<SightDetails> {
   @override
   Widget build(BuildContext context) {
-    final card = ModalRoute.of(context)?.settings.arguments as Sight;
+    // final card = ModalRoute.of(context)?.settings.arguments as Sight;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -35,7 +36,7 @@ class _SightDetailsState extends State<SightDetails> {
           SliverAppBar(
             automaticallyImplyLeading: false,
             expandedHeight: 250,
-            flexibleSpace: AppBarDetails(card: card),
+            flexibleSpace: AppBarDetails(card: widget.card),
           ),
           SliverFillRemaining(
             child: Padding(
@@ -45,13 +46,13 @@ class _SightDetailsState extends State<SightDetails> {
                 children: [
                   const SizeHeight24(),
                   Text(
-                    card.name,
+                    widget.card.name,
                     style: theme.textTheme.titleMedium,
                   ),
                   Row(
                     children: [
                       Text(
-                        card.type,
+                        widget.card.type,
                         style: theme.textTheme.headlineSmall,
                       ),
                       const SizedBox(
@@ -65,7 +66,7 @@ class _SightDetailsState extends State<SightDetails> {
                   ),
                   const SizeHeight24(),
                   Text(
-                    card.details,
+                    widget.card.details,
                     style: theme.textTheme.bodyMedium,
                   ),
                   const SizeHeight24(),
@@ -81,10 +82,6 @@ class _SightDetailsState extends State<SightDetails> {
                       child: SizedBox(
                         height: 48,
                         width: double.infinity,
-                        // decoration: BoxDecoration(
-                        //   color: theme.buttonColor,
-                        //   borderRadius: const BorderRadius.all(Radius.circular(12)),
-                        // ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -105,11 +102,11 @@ class _SightDetailsState extends State<SightDetails> {
                       ),
                       onTap: () {
                         final hiveBox = Hive.box<Sight>(AppStrings.boxSights);
-                        final boxCard = hiveBox.get(card.name)!
+                        final boxCard = hiveBox.get(widget.card.name)!
                           ..liked = false
                           ..visited = true
                           ..timeVisit = 'Test';
-                        hiveBox.put(card.name, boxCard);
+                        hiveBox.put(widget.card.name, boxCard);
                         Navigator.of(context).pushReplacementNamed(
                           AppStrings.visitedScreen,
                           arguments: 1,
@@ -129,7 +126,7 @@ class _SightDetailsState extends State<SightDetails> {
                       Flexible(
                         child: InkWell(
                           highlightColor: Colors.transparent,
-                          child: FlexsibleButtonCalendar(card: card),
+                          child: FlexsibleButtonCalendar(card: widget.card),
                           onTap: () {
                             setState(
                               () {
@@ -141,10 +138,21 @@ class _SightDetailsState extends State<SightDetails> {
                                 ).then(
                                   (value) {
                                     if (value != null) {
-                                      card.liked = true;
-                                      // ignore: cascade_invocations
-                                      card.timeVisit =
-                                          'Запланировано на: ${value.toLocal().day} ${DateFormat.MMM().format(value)} ${value.toLocal().year}';
+                                      widget.card.liked = true;
+                                      showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now(),
+                                      ).then(
+                                        (time) {
+                                          if (time != null) {
+                                            widget.card.timeVisit =
+                                                'Запланировано на: ${value.toLocal().day} ${DateFormat.MMM().format(value)} ${value.toLocal().year} ${time.format(context)}';
+                                          } else {
+                                            widget.card.timeVisit =
+                                                'Запланировано на: ${value.toLocal().day} ${DateFormat.MMM().format(value)} ${value.toLocal().year}';
+                                          }
+                                        },
+                                      );
                                     }
                                   },
                                 );
@@ -157,9 +165,9 @@ class _SightDetailsState extends State<SightDetails> {
                         child: InkWell(
                           highlightColor: Colors.transparent,
                           onTap: () {
-                            card.liked = true;
+                            widget.card.liked = true;
                           },
-                          child: FlexsibleButtonFavorited(card: card),
+                          child: FlexsibleButtonFavorited(card: widget.card),
                         ),
                       ),
                     ],

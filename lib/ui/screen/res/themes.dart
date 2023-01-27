@@ -33,6 +33,7 @@ final lightTheme = ThemeData(
     bodySmall: AppTextStyles.text.copyWith(color: AppColors.greenDetails),
     displayMedium: AppTextStyles.smallBold.copyWith(color: AppColors.white),
     displaySmall: AppTextStyles.subtitle.copyWith(color: AppColors.whiteMain),
+    displayLarge: AppTextStyles.button.copyWith(color: AppColors.greenDetails),
   ),
   buttonColor: AppColors.whiteGreen,
   colorScheme: const ColorScheme.light().copyWith(
@@ -90,6 +91,7 @@ final darkTheme = ThemeData(
     bodySmall: AppTextStyles.text.copyWith(color: AppColors.greenDetails),
     displayMedium: AppTextStyles.smallBold.copyWith(color: AppColors.white),
     displaySmall: AppTextStyles.subtitle.copyWith(color: AppColors.white),
+    displayLarge: AppTextStyles.button.copyWith(color: AppColors.greenDetails),
   ),
   buttonColor: AppColors.blackGreen,
   canvasColor: AppColors.mainDark,

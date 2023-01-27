@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_void_async
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -112,7 +110,9 @@ class App extends StatelessWidget {
           title: AppStrings.appTitle,
           initialRoute: AppStrings.maingsScreen,
           routes: {
-            AppStrings.detailsScreen: (context) => const SightDetails(),
+            AppStrings.detailsScreen: (context) => SightDetails(
+                  card: mocks[0],
+                ),
             AppStrings.visitedScreen: (context) => const VisitingScreen(),
             AppStrings.settingsScreen: (context) => const Settings(),
             AppStrings.filtersScreen: (context) => const FiltersScreen(),
