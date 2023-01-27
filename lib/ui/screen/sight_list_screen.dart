@@ -70,7 +70,7 @@ class _SightListScreenState extends State<SightListScreen> {
           SliverAppBar(
             pinned: true,
             automaticallyImplyLeading: false,
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.colorScheme.background,
             expandedHeight: 152,
             titleTextStyle: theme.textTheme.titleLarge,
             systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
@@ -79,12 +79,12 @@ class _SightListScreenState extends State<SightListScreen> {
             flexibleSpace: FlexibleSpaceBar(
               title: title,
               titlePadding: const EdgeInsets.symmetric(horizontal: 16),
-              background: ColoredBox(color: theme.backgroundColor),
+              background: ColoredBox(color: theme.colorScheme.background),
             ),
           ),
           SliverAppBar(
             automaticallyImplyLeading: false,
-            backgroundColor: theme.backgroundColor,
+            backgroundColor: theme.colorScheme.background,
             titleTextStyle: theme.textTheme.titleLarge,
             systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
               statusBarColor: Colors.transparent,
