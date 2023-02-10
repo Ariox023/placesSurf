@@ -229,7 +229,9 @@ class _SecondIconButtonWigetLikeState extends State<SecondIconButtonWigetLike> {
           highlightColor: Colors.transparent,
           icon: SvgPicture.asset(
             widget.cardSign.liked ? AppIcons.heartFull : AppIcons.heart,
-            color: AppColors.white,
+            colorFilter:
+                const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            // color: AppColors.white,
           ),
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -313,7 +315,8 @@ class _FirstIconButtonWigetCalendarState
           highlightColor: Colors.transparent,
           icon: SvgPicture.asset(
             AppIcons.calendarWhite,
-            color: AppColors.white,
+            colorFilter:
+                const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
           ),
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -370,7 +373,8 @@ class _FirstIconButtonWigetShareState extends State<FirstIconButtonWigetShare> {
           highlightColor: Colors.transparent,
           icon: SvgPicture.asset(
             AppIcons.share,
-            color: AppColors.white,
+            colorFilter:
+                const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
           ),
           padding: EdgeInsets.zero,
           onPressed: () {},

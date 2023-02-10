@@ -615,28 +615,23 @@ class AddImage extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             highlightColor: Colors.transparent,
             onTap: () {
-              final adreses = <String>[];
-
-              showModalBottomSheet<List<String>>(
-                constraints: const BoxConstraints(maxHeight: 216),
-                backgroundColor: Colors.transparent,
+              // final adreses = <String>[];
+              showDialog<List<String>>(
                 context: context,
                 builder: (context) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  return Dialog(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        InkWell(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            height: 48,
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
-                              ),
-                              color: theme.backgroundColor,
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: theme.backgroundColor,
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              topLeft: Radius.circular(12),
                             ),
+                          ),
+                          child: SimpleDialogOption(
                             child: Row(
                               children: [
                                 SvgPicture.asset(
@@ -653,7 +648,6 @@ class AddImage extends StatelessWidget {
                               ],
                             ),
                           ),
-                          onTap: () {},
                         ),
                         Stack(
                           children: [
@@ -669,11 +663,11 @@ class AddImage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        InkWell(
-                          child: Container(
-                            height: 48,
+                        DecoratedBox(
+                          decoration: BoxDecoration(
                             color: theme.backgroundColor,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                          ),
+                          child: SimpleDialogOption(
                             child: Row(
                               children: [
                                 SvgPicture.asset(
@@ -705,17 +699,15 @@ class AddImage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        InkWell(
-                          child: Container(
-                            height: 48,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: BoxDecoration(
-                              color: theme.backgroundColor,
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(12.0),
-                                bottomRight: Radius.circular(12.0),
-                              ),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: theme.backgroundColor,
+                            borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(12),
+                              bottomLeft: Radius.circular(12),
                             ),
+                          ),
+                          child: SimpleDialogOption(
                             child: Row(
                               children: [
                                 SvgPicture.asset(
@@ -731,28 +723,27 @@ class AddImage extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            onPressed: () {
+                              inputDialog(context).then((value) {
+                                if (value != null && value.isNotEmpty) {
+                                  AdressNotification(adress: value)
+                                      .dispatch(context);
+                                }
+                              });
+                            },
                           ),
-                          onTap: () {
-                            inputDialog(context).then((value) {
-                              if (value != null && value.isNotEmpty) {
-                                adreses.add(value);
-                              }
-                            });
-                          },
                         ),
                         const SizedBox(
                           height: 8,
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
+                        SimpleDialogOption(
+                          padding: EdgeInsets.zero,
                           child: Container(
                             height: 48,
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12.0)),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(12.0),
+                              ),
                               color: theme.backgroundColor,
                             ),
                             child: Center(
@@ -762,21 +753,179 @@ class AddImage extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 8,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ],
                     ),
+                    backgroundColor: Colors.transparent,
+                    alignment: Alignment.bottomCenter,
+                    elevation: 0,
+                    insetPadding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   );
                 },
-              ).then(
-                (value) => value?.map(
-                  (e) {
-                    AdressNotification(adress: e).dispatch(context);
-                  },
-                ),
               );
+              // showModalBottomSheet<List<String>>(
+              //   constraints: const BoxConstraints(maxHeight: 216),
+              //   backgroundColor: Colors.transparent,
+              //   context: context,
+              //   builder: (context) {
+              //     return Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: 16),
+              //       child: Column(
+              //         children: [
+              //           InkWell(
+              //             child: Container(
+              //               padding: const EdgeInsets.symmetric(horizontal: 16),
+              //               height: 48,
+              //               decoration: BoxDecoration(
+              //                 borderRadius: const BorderRadius.only(
+              //                   topLeft: Radius.circular(8.0),
+              //                   topRight: Radius.circular(8.0),
+              //                 ),
+              //                 color: theme.backgroundColor,
+              //               ),
+              //               child: Row(
+              //                 children: [
+              //                   SvgPicture.asset(
+              //                     AppIcons.iconPhoto,
+              //                     height: 24,
+              //                     width: 24,
+              //                   ),
+              //                   const SizedBox(
+              //                     width: 13,
+              //                   ),
+              //                   const Text(
+              //                     AppStrings.scrMapNewSightAddImageCamera,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //             onTap: () {},
+              //           ),
+              //           Stack(
+              //             children: [
+              //               Container(
+              //                 color: theme.backgroundColor,
+              //                 height: 2,
+              //               ),
+              //               Container(
+              //                 color: theme.dividerTheme.color,
+              //                 height: 2,
+              //                 margin:
+              //                     const EdgeInsets.symmetric(horizontal: 16),
+              //               ),
+              //             ],
+              //           ),
+              //           InkWell(
+              //             child: Container(
+              //               height: 48,
+              //               color: theme.backgroundColor,
+              //               padding: const EdgeInsets.symmetric(horizontal: 16),
+              //               child: Row(
+              //                 children: [
+              //                   SvgPicture.asset(
+              //                     AppIcons.iconCamera,
+              //                     height: 24,
+              //                     width: 24,
+              //                   ),
+              //                   const SizedBox(
+              //                     width: 13,
+              //                   ),
+              //                   const Text(
+              //                     AppStrings.scrMapNewSightAddImagePhoto,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //           Stack(
+              //             children: [
+              //               Container(
+              //                 color: theme.backgroundColor,
+              //                 height: 2,
+              //               ),
+              //               Container(
+              //                 color: theme.dividerTheme.color,
+              //                 height: 2,
+              //                 margin:
+              //                     const EdgeInsets.symmetric(horizontal: 16),
+              //               ),
+              //             ],
+              //           ),
+              //           InkWell(
+              //             child: Container(
+              //               height: 48,
+              //               padding: const EdgeInsets.symmetric(horizontal: 16),
+              //               decoration: BoxDecoration(
+              //                 color: theme.backgroundColor,
+              //                 borderRadius: const BorderRadius.only(
+              //                   bottomLeft: Radius.circular(12.0),
+              //                   bottomRight: Radius.circular(12.0),
+              //                 ),
+              //               ),
+              //               child: Row(
+              //                 children: [
+              //                   SvgPicture.asset(
+              //                     AppIcons.iconFail,
+              //                     height: 24,
+              //                     width: 24,
+              //                   ),
+              //                   const SizedBox(
+              //                     width: 13,
+              //                   ),
+              //                   const Text(
+              //                     AppStrings.scrMapNewSightAddImageFail,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //             onTap: () {
+              //               inputDialog(context).then((value) {
+              //                 if (value != null && value.isNotEmpty) {
+              //                   adreses.add(value);
+              //                 }
+              //               });
+              //             },
+              //           ),
+              //           const SizedBox(
+              //             height: 8,
+              //           ),
+              //           InkWell(
+              //             onTap: () {
+              //               Navigator.of(context).pop();
+              //             },
+              //             child: Container(
+              //               height: 48,
+              //               padding: const EdgeInsets.symmetric(horizontal: 16),
+              //               decoration: BoxDecoration(
+              //                 borderRadius:
+              //                     const BorderRadius.all(Radius.circular(12.0)),
+              //                 color: theme.backgroundColor,
+              //               ),
+              //               child: Center(
+              //                 child: Text(
+              //                   AppStrings.buttonCancellation.toUpperCase(),
+              //                   style: theme.textTheme.displayLarge,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //           const SizedBox(
+              //             height: 8,
+              //           ),
+              //         ],
+              //       ),
+              //     );
+              //   },
+              // ).then(
+              //   (value) => value?.map(
+              //     (e) {
+              //       AdressNotification(adress: e).dispatch(context);
+              //     },
+              //   ),
+              // );
             },
             child: Container(
               height: 72,

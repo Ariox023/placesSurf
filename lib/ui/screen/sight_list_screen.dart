@@ -103,8 +103,12 @@ class _SightListScreenState extends State<SightListScreen> {
               ),
             ),
           if (listOfWidgets.isNotEmpty)
-            SliverList(
-              delegate: SliverChildListDelegate(listOfWidgets),
+            // SliverList(
+            //   delegate: SliverChildListDelegate(listOfWidgets),
+            // ),
+            SliverGrid.extent(
+              maxCrossAxisExtent: 2,
+              children: listOfWidgets,
             ),
         ],
       ),

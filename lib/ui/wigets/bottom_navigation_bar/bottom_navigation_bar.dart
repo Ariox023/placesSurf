@@ -14,34 +14,46 @@ class BottomBar extends StatelessWidget {
     return BottomNavigationBar(
       items: [
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.list, color: color),
+          icon: SvgPicture.asset(
+            AppIcons.list,
+            colorFilter: ColorFilter.mode(color!, BlendMode.srcIn),
+          ),
           activeIcon: SvgPicture.asset(
             AppIcons.listFull,
-            color: color,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.map, color: color),
+          icon: SvgPicture.asset(
+            AppIcons.map,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          ),
           activeIcon: SvgPicture.asset(
             AppIcons.mapFull,
-            color: color,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.heartDark, color: color),
+          icon: SvgPicture.asset(
+            AppIcons.heartDark,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          ),
           activeIcon: SvgPicture.asset(
             AppIcons.heartFull,
-            color: color,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(AppIcons.settings, color: color),
+          icon: SvgPicture.asset(
+            AppIcons.settings,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
+          ),
           activeIcon: SvgPicture.asset(
             AppIcons.settingsFull,
-            color: color,
+            colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
           ),
           label: '',
         ),

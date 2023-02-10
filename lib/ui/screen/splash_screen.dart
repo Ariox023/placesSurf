@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Center(
         child: SvgPicture.asset(
           AppIcons.iconSpalsh,
-          color: AppColors.white,
+          colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
         ),
       ),
     );
